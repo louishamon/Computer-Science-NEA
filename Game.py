@@ -14,9 +14,8 @@ class Game:
     self.object_sprites = pygame.sprite.Group()
   
   
-  def play(self):
+  def play(self, screen):
     pygame.init()
-    screen = pygame.display.set_mode((screen_width, screen_height))
     clock = pygame.time.Clock()
     run = True
     while run:
@@ -24,3 +23,8 @@ class Game:
       self.all_sprites.draw(screen)
       pygame.display.update()
       clock.tick(60)
+
+  def quit(self, screen):
+    if event.type == pygame.QUIT:
+      self.is_running = False
+    pygame.quit()
