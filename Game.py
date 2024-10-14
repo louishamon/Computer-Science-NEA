@@ -23,8 +23,10 @@ class Game:
       self.all_sprites.draw(screen)
       pygame.display.update()
       clock.tick(60)
+      for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+          quit()
 
   def quit(self, screen):
-    if event.type == pygame.QUIT:
-      self.is_running = False
+    pygame.display.quit()
     pygame.quit()
