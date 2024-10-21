@@ -1,4 +1,5 @@
 import pygame
+from Character import *
 from settings import *
 
 class Game:
@@ -16,6 +17,7 @@ class Game:
   
   def play(self, screen):
     pygame.init()
+    self.create_object()
     clock = pygame.time.Clock()
     run = True
     while run:
@@ -30,3 +32,8 @@ class Game:
   def quit(self, screen):
     pygame.display.quit()
     pygame.quit()
+
+  def create_object(self):
+    player = Character((50, 50), (0,0))
+    self.all_sprites.add(player)
+    self.player_sprites.add(player)
