@@ -1,6 +1,7 @@
 import pygame
 from Character import *
 from settings import *
+from Player import *
 
 class Game:
   def __init__(self, screen_width, screen_height):
@@ -34,6 +35,6 @@ class Game:
     pygame.quit()
 
   def create_object(self):
-    player = Character((50, 50), (0,0))
+    player = Player((50, 50), (0,0))
     self.all_sprites.add(player)
     self.player_sprites.add(player)
