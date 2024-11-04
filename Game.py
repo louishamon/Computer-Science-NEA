@@ -26,6 +26,7 @@ class Game:
       self.all_sprites.draw(screen)
       pygame.display.update()
       clock.tick(60)
+      self.player.update()
       for event in pygame.event.get():
         if event.type == pygame.QUIT:
           quit()
@@ -35,6 +36,6 @@ class Game:
     pygame.quit()
 
   def create_object(self):
-    player = Player((50, 50), (0,0))
-    self.all_sprites.add(player)
-    self.player_sprites.add(player)
+    self.player = Player((50, 50), (0,0))
+    self.all_sprites.add(self.player)
+    self.player_sprites.add(self.player)
