@@ -1,4 +1,5 @@
 from Character import *
+from settings import *
 import pygame
 
 class Player(Character):
@@ -11,13 +12,15 @@ class Player(Character):
     self.vault_keycard = False
     self.usb = False
     self.suspicious = False
+    self.image.fill("black")
 
   def update(self):
     self.get_input()
     self.rect.x += self.x_direction
+    self.x_collisions(collision_objects)
     self.rect.y += self.y_direction
-    #self.x_collisions(wall_sprites)
-    #self.y_collisions(wall_sprites)
+    self.y_collisions(collision_objects)
+    
   
   def get_input(self):
     keys = pygame.key.get_pressed()

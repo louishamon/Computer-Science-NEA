@@ -7,7 +7,6 @@ class Character(pygame.sprite.Sprite):
     self.current_weapon = None
     self.hp = 100
     self.image = self.image = pygame.Surface((size[0], size[1]))
-    self.image.fill("black")
     self.rect = self.image.get_rect(topleft = pos)
     self.x_direction = 0
     self.y_direction = 0
@@ -18,17 +17,17 @@ class Character(pygame.sprite.Sprite):
 
   def x_collisions(self, wall_sprites):
     for i in wall_sprites:
-      if i.rect.collide(self.rect):
+      if i.rect.colliderect(self.rect):
         if self.x_direction > 0:
           self.rect.right = i.rect.left
         else:
-          self.rect.left = i.rect.left
+          self.rect.left = i.rect.right
 
 
   def y_collisions(self, wall_sprites):
     for i in wall_sprites:
-      if i.rect.collide(self.rect):
-        if self.y_direction > 0:
+      if i.rect.colliderect(self.rect):
+        if self.y_direction < 0:
           self.rect.top = i.rect.bottom
         else:
           self.rect.bottom = i.rect.top

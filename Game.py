@@ -3,6 +3,7 @@ from Character import *
 from settings import *
 from Player import *
 from Barriers import *
+from Guard import *
 
 class Game:
   def __init__(self, screen_width, screen_height, new_object_sprites):
@@ -12,7 +13,7 @@ class Game:
     self.alarm = False
     self.all_sprites = pygame.sprite.Group()
     self.player_sprites = pygame.sprite.Group()
-    self.enemy_sprites = pygame.sprite.Group()
+    self.guard_sprites = pygame.sprite.Group()
     self.object_sprites = new_object_sprites
   
   
@@ -28,6 +29,7 @@ class Game:
       pygame.display.update()
       clock.tick(60)
       self.player.update()
+      self.guard.update()
       for event in pygame.event.get():
         if event.type == pygame.QUIT:
           quit()
@@ -37,9 +39,13 @@ class Game:
     pygame.quit()
 
   def create_object(self):
-    self.player = Player((50, 50), (0,0))
+    self.player = Player((35, 35), (70,70))
     self.all_sprites.add(self.player)
     self.player_sprites.add(self.player)
+
+    self.guard = Guard((35, 35), (450,250), "guard", 0, guard_movement_speed)
+    self.all_sprites.add(self.guard)
+    self.guard_sprites.add(self.guard)
     
   def draw_map(self, game_map, collision_objects):
     for row_index, row in enumerate(game_map):
