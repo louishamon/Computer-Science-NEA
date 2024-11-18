@@ -4,6 +4,7 @@ from settings import *
 from Player import *
 from Barriers import *
 from Guard import *
+from splash_screen import *
 
 class Game:
   def __init__(self, screen_width, screen_height, new_object_sprites):
@@ -22,6 +23,7 @@ class Game:
     self.create_object()
     clock = pygame.time.Clock()
     run = True
+    splash_page = Splash(3000)
     self.draw_map(game_map, self.object_sprites)
     while run:
       screen.fill("white")
