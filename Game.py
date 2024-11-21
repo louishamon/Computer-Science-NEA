@@ -24,6 +24,7 @@ class Game:
     clock = pygame.time.Clock()
     run = True
     splash_page = Splash(3000, self)
+    splash_page.run()
     self.draw_map(game_map, self.object_sprites)
     while run:
       screen.fill("white")
