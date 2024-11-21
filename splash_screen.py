@@ -1,9 +1,8 @@
 import pygame
 from Game import *
-from main import *
 
 class Splash():
-  def __init__(self, new_display_time):
+  def __init__(self, new_display_time, new_game):
     self.image = pygame.image.load("splash_page.webp").convert()
     self.display_time = new_display_time
     self.screen = new_game.screen
