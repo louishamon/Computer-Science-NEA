@@ -7,7 +7,7 @@ class Player(Character):
     super().__init__(new_pos)
     self.image_setup = pygame.image.load("survivor_no_background.png").convert_alpha()
     self.image = pygame.transform.scale(self.image_setup, (75, 75))
-    self.rect = self.image.get_rect(topleft = self.pos)
+    self.rect = self.hitbox_rect.copy()
     self.disguise = None
     self.ammo = 30
     self.gun_held = (30, 2)
@@ -42,3 +42,6 @@ class Player(Character):
       self.y_direction = self.movement_speed
     else:
       self.y_direction = 0
+
+  def rotation(self):
+    
