@@ -1,14 +1,17 @@
+import pygame
 from Character import *
 from Game import *
 from settings import *
 
 class Guard(Character):
-  def __init__(self, new_size, new_pos, new_type, new_x_direction, new_y_direction):
-    super().__init__(new_size, new_pos)
+  def __init__(self, new_pos, new_type, new_x_direction, new_y_direction):
+    super().__init__(new_pos)
     self.held_item = None
     self.type = new_type
     self.combat = None
     self.hp = 100
+    self.image = pygame.Surface((50, 50))
+    self.rect = self.image.get_rect(topleft = self.pos)
     self.image.fill("yellow")
     self.x_direction = new_x_direction
     self.y_direction = new_y_direction

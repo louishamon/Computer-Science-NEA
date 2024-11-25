@@ -3,8 +3,11 @@ from settings import *
 import pygame
 
 class Player(Character):
-  def __init__(self, new_size, new_pos):
-    super().__init__(new_size, new_pos)
+  def __init__(self, new_pos):
+    super().__init__(new_pos)
+    self.image_setup = pygame.image.load("survivor_no_background.png").convert_alpha()
+    self.image = pygame.transform.scale(self.image_setup, (75, 75))
+    self.rect = self.image.get_rect(topleft = self.pos)
     self.disguise = None
     self.ammo = 30
     self.gun_held = (30, 2)
@@ -12,7 +15,10 @@ class Player(Character):
     self.vault_keycard = False
     self.usb = False
     self.suspicious = False
-    self.image.fill("black")
+    self.rot = 0
+    self.base_player_image = self.image
+    self.hitbox_rect = self.base_player_image.get_rect(topleft = self.pos)
+    
 
   def update(self):
     self.get_input()

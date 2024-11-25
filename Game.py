@@ -42,11 +42,11 @@ class Game:
     pygame.quit()
 
   def create_object(self):
-    self.player = Player((35, 35), (70,70))
+    self.player = Player((90,90))
     self.all_sprites.add(self.player)
     self.player_sprites.add(self.player)
 
-    self.guard = Guard((35, 35), (450,250), "guard", 0, guard_movement_speed)
+    self.guard = Guard((640,320), "guard", 0, guard_movement_speed)
     self.all_sprites.add(self.guard)
     self.guard_sprites.add(self.guard)
     

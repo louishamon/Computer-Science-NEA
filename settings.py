@@ -4,8 +4,8 @@ screen_width = 1792
 screen_height = 1024
 screen = pygame.display.set_mode((screen_width, screen_height))
 
-block_width = 50
-block_height = 50
+block_width = 70
+block_height = 70
 
 guard_movement_speed = 2
 

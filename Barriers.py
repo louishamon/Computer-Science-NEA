@@ -1,3 +1,4 @@
+import pygame
 from settings import *
 
 class Base_wall(pygame.sprite.Sprite):
