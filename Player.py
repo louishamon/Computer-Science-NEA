@@ -6,7 +6,9 @@ class Player(Character):
   def __init__(self, new_pos):
     super().__init__(new_pos)
     self.image_setup = pygame.image.load("survivor_no_background.png").convert_alpha()
-    self.image = pygame.transform.scale(self.image_setup, (75, 75))
+    self.image = pygame.transform.scale(self.image_setup, (60, 40))
+    self.base_player_image = self.image
+    self.hitbox_rect = self.base_player_image.get_rect(topleft = self.pos)
     self.rect = self.hitbox_rect.copy()
     self.disguise = None
     self.ammo = 30
@@ -16,8 +18,8 @@ class Player(Character):
     self.usb = False
     self.suspicious = False
     self.rot = 0
-    self.base_player_image = self.image
-    self.hitbox_rect = self.base_player_image.get_rect(topleft = self.pos)
+    
+    
     
 
   def update(self):
@@ -44,4 +46,4 @@ class Player(Character):
       self.y_direction = 0
 
   def rotation(self):
-    
+    pass
