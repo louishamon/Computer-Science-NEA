@@ -23,7 +23,7 @@ class Game:
     self.create_object()
     clock = pygame.time.Clock()
     run = True
-    splash_page = Splash(3000, self)
+    splash_page = Splash(2000, self)
     splash_page.run()
     self.draw_map(game_map, self.object_sprites)
     while run:
@@ -42,7 +42,7 @@ class Game:
     pygame.quit()
 
   def create_object(self):
-    self.player = Player((90,90))
+    self.player = Player((110,110))
     self.all_sprites.add(self.player)
     self.player_sprites.add(self.player)
 

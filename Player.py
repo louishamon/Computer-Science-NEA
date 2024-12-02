@@ -1,6 +1,7 @@
 from Character import *
 from settings import *
 import pygame
+import math
 
 class Player(Character):
   def __init__(self, new_pos):
@@ -19,15 +20,14 @@ class Player(Character):
     self.suspicious = False
     self.rot = 0
     
-    
-    
 
   def update(self):
     self.get_input()
     self.rect.x += self.x_direction
-    self.x_collisions(collision_objects)
+    #self.x_collisions(collision_objects)
     self.rect.y += self.y_direction
-    self.y_collisions(collision_objects)
+    #self.y_collisions(collision_objects)
+    self.rotation()
     
   
   def get_input(self):
@@ -44,6 +44,15 @@ class Player(Character):
       self.y_direction = self.movement_speed
     else:
       self.y_direction = 0
+    
 
+  
   def rotation(self):
-    pass
+    mouse_pos = pygame.mouse.get_pos()
+    x_difference = mouse_pos[0] - self.rect.center[0]
+    y_difference = mouse_pos[1] - self.rect.center[1]
+    self.angle = math.degrees(math.atan2(y_difference, x_difference))
+    self.image = pygame.transform.rotate(self.base_player_image, -self.angle)
+    self.rect = self.image.get_rect(center = self.hitbox_rect.center)
+    self.hitbox_rect.center = self.pos
+    self.rect.center = self.hitbox_rect.center
