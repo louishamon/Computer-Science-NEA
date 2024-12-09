@@ -47,7 +47,7 @@ class Player(Character):
 
   def player_x_collisions(self, wall_sprites):
     for i in wall_sprites:
-      if i.rect.colliderect(self.rect):
+      if i.rect.colliderect(self.hitbox_rect):
         if self.x_direction > 0:
           self.hitbox_rect.right = i.rect.left
         else:
@@ -56,7 +56,7 @@ class Player(Character):
 
   def player_y_collisions(self, wall_sprites):
     for i in wall_sprites:
-      if i.rect.colliderect(self.rect):
+      if i.rect.colliderect(self.hitbox_rect):
         if self.y_direction < 0:
           self.hitbox_rect.top = i.rect.bottom
         else:
@@ -70,4 +70,4 @@ class Player(Character):
     self.angle = math.degrees(math.atan2(y_difference, x_difference))
     self.image = pygame.transform.rotate(self.base_player_image, -self.angle)
     self.rect = self.image.get_rect(center = self.rect.center)
-    self.hitbox_rect.center = self.rect.center
+    #self.hitbox_rect.center = self.rect.center
