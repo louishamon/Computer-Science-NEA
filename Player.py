@@ -23,7 +23,7 @@ class Player(Character):
 
   def update(self):
     self.get_input()
-    self.rect.x += self.x_direction
+    self.rect.x += self.x_direction  
     self.x_collisions(collision_objects)
     self.rect.y += self.y_direction
     self.y_collisions(collision_objects)
@@ -69,5 +69,5 @@ class Player(Character):
     y_difference = mouse_pos[1] - self.rect.center[1]
     self.angle = math.degrees(math.atan2(y_difference, x_difference))
     self.image = pygame.transform.rotate(self.base_player_image, -self.angle)
-    self.rect = self.image.get_rect(center = self.rect.center)
-    #self.hitbox_rect.center = self.rect.center
+    self.hitbox_rect.center = self.rect.center
+    self.rect = self.image.get_rect(center = self.hitbox_rect.center)

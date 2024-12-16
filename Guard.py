@@ -9,7 +9,6 @@ class Guard(Character):
     self.held_item = None
     self.type = new_type
     self.combat = None
-    self.hp = 100
     self.image = pygame.Surface((50, 50))
     self.rect = self.image.get_rect(topleft = self.pos)
     self.image.fill("yellow")

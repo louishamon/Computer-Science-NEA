@@ -33,6 +33,7 @@ class Game:
       clock.tick(60)
       self.player.update()
       self.guard.update()
+      self.guard2.update()
       for event in pygame.event.get():
         if event.type == pygame.QUIT:
           quit()
@@ -49,6 +50,10 @@ class Game:
     self.guard = Guard((640,320), "guard", 0, guard_movement_speed)
     self.all_sprites.add(self.guard)
     self.guard_sprites.add(self.guard)
+    self.guard2 = Guard((840,220), "guard", guard_movement_speed, 0)
+    self.all_sprites.add(self.guard2)
+    self.guard_sprites.add(self.guard2)
+    
     
   def draw_map(self, game_map, collision_objects):
     for row_index, row in enumerate(game_map):
