@@ -9,8 +9,9 @@ class Player(Character):
     self.image_setup = pygame.image.load("survivor_no_background.png").convert_alpha()
     self.image = pygame.transform.scale(self.image_setup, (60, 40))
     self.base_player_image = self.image
-    self.hitbox_rect = self.base_player_image.get_rect(topleft = self.pos)
-    self.rect = self.hitbox_rect.copy()
+    self.rect = self.image.get_rect(topleft = self.pos)
+    self.hitbox_rect = player_hitbox
+    self.hitbox_rect.center = self.rect.center
     self.disguise = None
     self.ammo = 30
     self.gun_held = (30, 2)
@@ -23,11 +24,13 @@ class Player(Character):
 
   def update(self):
     self.get_input()
-    self.rect.x += self.x_direction  
-    self.x_collisions(collision_objects)
-    self.rect.y += self.y_direction
-    self.y_collisions(collision_objects)
+    self.hitbox_rect.centerx += self.x_direction  
+    self.player_x_collisions(collision_objects)
+    self.hitbox_rect.centery += self.y_direction
+    self.player_y_collisions(collision_objects)
     self.rotation()
+    self.rect.center = self.hitbox_rect.center
+    
     
   
   def get_input(self):
@@ -71,3 +74,4 @@ class Player(Character):
     self.image = pygame.transform.rotate(self.base_player_image, -self.angle)
     self.hitbox_rect.center = self.rect.center
     self.rect = self.image.get_rect(center = self.hitbox_rect.center)
+    self.rect.center = self.hitbox_rect.center

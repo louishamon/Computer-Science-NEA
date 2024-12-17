@@ -9,6 +9,8 @@ block_height = 70
 
 guard_movement_speed = 2
 
+player_hitbox = pygame.Rect(0, 0, 70, 70)
+
 game_map = [
     ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"],
     ["X", "", "", "", "", "X", "", "", "", "", "", "", "", "", "", "", "", "", "", "X"],
