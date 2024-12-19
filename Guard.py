@@ -16,16 +16,16 @@ class Guard(Character):
     self.y_direction = new_y_direction
     self.chase_track = False
   
-  def movement(self):
+  def movement(self): # movement method for guards, when moving, the rect position must follow so the coordinates of each guard can be tracked
     self.rect.x += self.x_direction
     self.rect.y += self.y_direction
     
-  def patrol_x_collisions(self, wall_sprites):
+  def patrol_x_collisions(self, wall_sprites): # controls x collisions for when the guard is patrolling, allowing guards to bounce off walls
     for i in wall_sprites:
       if i.rect.colliderect(self.rect):
-        self.x_direction = -self.x_direction
+        self.x_direction = -self.x_direction # inverts direction to bouce back the opposite direction
 
-  def patrol_y_collisions(self, wall_sprites):
+  def patrol_y_collisions(self, wall_sprites): # controls y collisions for when the guard is patrolling, allowing guards to bounce off walls
     for i in wall_sprites:
       if i.rect.colliderect(self.rect):
         self.y_direction = -self.y_direction
@@ -33,7 +33,7 @@ class Guard(Character):
   def chase(self):
     pass
 
-  def update(self):
+  def update(self): # update method for guards to run any methods that need to be run every frame
     self.movement()
     if self.chase_track:
       self.x_collisions(collision_objects)

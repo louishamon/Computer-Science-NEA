@@ -6,33 +6,30 @@ import math
 class Player(Character):
   def __init__(self, new_pos):
     super().__init__(new_pos)
-    self.image_setup = pygame.image.load("survivor_no_background.png").convert_alpha()
-    self.image = pygame.transform.scale(self.image_setup, (60, 40))
+    self.image_setup = pygame.image.load("survivor_no_background.png").convert_alpha() # imports the image and converts for better performance
+    self.image = pygame.transform.scale(self.image_setup, (60, 40)) # changing dimensions of image
     self.base_player_image = self.image
-    self.rect = self.image.get_rect(topleft = self.pos)
-    self.hitbox_rect = player_hitbox
+    self.rect = self.image.get_rect(topleft = self.pos) # creates player rectangle using the image dimensions
+    self.hitbox_rect = player_hitbox # creates the hitbox rectangle to handle collisions
     self.hitbox_rect.center = self.rect.center
-    self.disguise = None
+    self.disguise = None # stores the disguise currently worn by the player for guards to ignore them
     self.ammo = 30
     self.gun_held = (30, 2)
-    self.keycard = False
-    self.vault_keycard = False
+    self.keycard = False # stores if the player has a keycard
+    self.vault_keycard = False # stores if the player has a vault keycard
     self.usb = False
     self.suspicious = False
-    self.rot = 0
     
 
-  def update(self):
+  def update(self): # update method for player to run any methods that need to be run every frame
     self.get_input()
-    self.hitbox_rect.centerx += self.x_direction  
+    self.hitbox_rect.centerx += self.x_direction # 
     self.player_x_collisions(collision_objects)
     self.hitbox_rect.centery += self.y_direction
     self.player_y_collisions(collision_objects)
     self.rotation()
     self.rect.center = self.hitbox_rect.center
-    
   
-    
   
   def get_input(self):
     keys = pygame.key.get_pressed()
