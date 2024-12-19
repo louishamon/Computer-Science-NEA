@@ -31,6 +31,7 @@ class Player(Character):
     self.rotation()
     self.rect.center = self.hitbox_rect.center
     
+  
     
   
   def get_input(self):
@@ -72,6 +73,5 @@ class Player(Character):
     y_difference = mouse_pos[1] - self.rect.center[1]
     self.angle = math.degrees(math.atan2(y_difference, x_difference))
     self.image = pygame.transform.rotate(self.base_player_image, -self.angle)
-    self.hitbox_rect.center = self.rect.center
     self.rect = self.image.get_rect(center = self.hitbox_rect.center)
     self.rect.center = self.hitbox_rect.center

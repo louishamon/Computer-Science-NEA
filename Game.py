@@ -30,6 +30,7 @@ class Game:
       screen.fill("white")
       self.all_sprites.draw(screen)
       pygame.draw.rect(self.screen, "black", self.player, 2)
+      pygame.draw.rect(self.screen, "yellow", self.player.hitbox_rect, 2)
       pygame.display.update()
       clock.tick(60)
       self.player.update()
