@@ -20,6 +20,7 @@ class Player(Character):
     self.usb = False
     self.suspicious = False
     
+    
 
   def update(self): # update method for player to run any methods that need to be run every frame
     self.get_input()
@@ -63,12 +64,15 @@ class Player(Character):
         else:
           self.hitbox_rect.bottom = i.rect.top
 
-  
-  def rotation(self):
+  def get_angle(self):
     mouse_pos = pygame.mouse.get_pos()
     x_difference = mouse_pos[0] - self.rect.center[0]
     y_difference = mouse_pos[1] - self.rect.center[1]
     self.angle = math.degrees(math.atan2(y_difference, x_difference))
-    self.image = pygame.transform.rotate(self.base_player_image, -self.angle)
+    return self.angle
+
+  
+  def rotation(self):
+    self.image = pygame.transform.rotate(self.base_player_image, -self.get_angle())
     self.rect = self.image.get_rect(center = self.hitbox_rect.center)
     self.rect.center = self.hitbox_rect.center
