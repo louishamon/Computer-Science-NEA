@@ -19,7 +19,8 @@ class Player(Character):
     self.vault_keycard = False # stores if the player has a vault keycard
     self.usb = False
     self.suspicious = False
-    
+    self.is_shooting = False
+    self.shoot_cooldown = 50
     
 
   def update(self): # update method for player to run any methods that need to be run every frame
@@ -30,6 +31,7 @@ class Player(Character):
     self.player_y_collisions(collision_objects)
     self.rotation()
     self.rect.center = self.hitbox_rect.center
+    self.shoot(self.rect.centerx, self.rect.centery, self.get_angle())
   
   
   def get_input(self):
@@ -46,7 +48,12 @@ class Player(Character):
       self.y_direction = self.movement_speed
     else:
       self.y_direction = 0
+    if pygame.mouse.get_pressed() == (1, 0, 0):
+      self.is_shooting = True
+    else:
+      self.is_shooting = False
 
+      
   def player_x_collisions(self, wall_sprites):
     for i in wall_sprites:
       if i.rect.colliderect(self.hitbox_rect):
@@ -69,6 +76,7 @@ class Player(Character):
     x_difference = mouse_pos[0] - self.rect.center[0]
     y_difference = mouse_pos[1] - self.rect.center[1]
     self.angle = math.degrees(math.atan2(y_difference, x_difference))
+    print(self.angle)
     return self.angle
 
   
@@ -76,3 +84,15 @@ class Player(Character):
     self.image = pygame.transform.rotate(self.base_player_image, -self.get_angle())
     self.rect = self.image.get_rect(center = self.hitbox_rect.center)
     self.rect.center = self.hitbox_rect.center
+
+  def shoot(self, x, y, angle):
+    if self.is_shooting == False:
+      self.shoot_cooldown -= 1
+      return
+    else:
+      if self.shoot_cooldown > 0:
+        self.shoot.cool_down -= 1
+        return
+      else:
+          self.shoot_cooldown = 50
+      
