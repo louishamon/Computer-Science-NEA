@@ -5,9 +5,10 @@ from Player import *
 from Barriers import *
 from Guard import *
 from splash_screen import *
+from Bullet import *
 
 class Game:
-  def __init__(self, screen_width, screen_height, new_object_sprites):
+  def __init__(self, screen_width, screen_height, new_object_sprites, new_bullet_sprites):
     self.size = (screen_width, screen_height)
     self.screen = pygame.display.set_mode(self.size)
     self.is_running = True
@@ -16,6 +17,7 @@ class Game:
     self.player_sprites = pygame.sprite.Group()
     self.guard_sprites = pygame.sprite.Group()
     self.object_sprites = new_object_sprites
+    self.bullet_sprites = new_bullet_sprites
   
   
   def play(self, screen, game_map): # sets up the game including the drawing of objects, splash screen and mainly the game loop
@@ -28,6 +30,7 @@ class Game:
     self.draw_map(game_map, self.object_sprites)
     while run:
       screen.fill("white") # blanks the whole screen before all objects are drawn again in the updated form
+      self.all_sprites.add(*bullet_sprites)
       self.all_sprites.draw(screen)
       #pygame.draw.rect(self.screen, "black", self.player, 2)
       #pygame.draw.rect(self.screen, "yellow", self.player.hitbox_rect, 2)
@@ -36,6 +39,7 @@ class Game:
       self.player.update()
       self.guard.update()
       self.guard2.update()
+      self.bullet_sprites.update()
       for event in pygame.event.get():
         if event.type == pygame.QUIT:
           quit()
@@ -55,6 +59,7 @@ class Game:
     self.guard2 = Guard((840,220), "guard", guard_movement_speed, 0)
     self.all_sprites.add(self.guard2)
     self.guard_sprites.add(self.guard2)
+    
     
     
   def draw_map(self, game_map, collision_objects): # method to use the list containing the location of basewall objects to draw to the screen

@@ -2,6 +2,7 @@ from Character import *
 from settings import *
 import pygame
 import math
+from Bullet import Bullet
 
 class Player(Character):
   def __init__(self, new_pos):
@@ -76,7 +77,7 @@ class Player(Character):
     x_difference = mouse_pos[0] - self.rect.center[0]
     y_difference = mouse_pos[1] - self.rect.center[1]
     self.angle = math.degrees(math.atan2(y_difference, x_difference))
-    print(self.angle)
+    #print(self.angle)
     return self.angle
 
   
@@ -86,13 +87,17 @@ class Player(Character):
     self.rect.center = self.hitbox_rect.center
 
   def shoot(self, x, y, angle):
+    #print(self.shoot_cooldown)
     if self.is_shooting == False:
       self.shoot_cooldown -= 1
       return
     else:
       if self.shoot_cooldown > 0:
-        self.shoot.cool_down -= 1
+        self.shoot_cooldown -= 1
         return
       else:
-          self.shoot_cooldown = 50
-      
+          self.shoot_cooldown = 20
+          self.bullet = Bullet(30, self.get_angle(), self.rect.centerx, self.rect.centery)
+          bullet_sprites.add(self.bullet)
+          print("bullet created")
+          

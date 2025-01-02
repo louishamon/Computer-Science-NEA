@@ -32,3 +32,4 @@ game_map = [
 ]
 
 collision_objects = pygame.sprite.Group()
+bullet_sprites = pygame.sprite.Group()
