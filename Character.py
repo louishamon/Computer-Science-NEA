@@ -11,7 +11,7 @@ class Character(pygame.sprite.Sprite):
     self.pos = new_pos
 
   def die(self):
-    if self.hp == 0:
+    if self.hp <= 0:
       self.kill()
 
   def x_collisions(self, wall_sprites):

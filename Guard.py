@@ -41,6 +41,7 @@ class Guard(Character):
     else:
       self.patrol_x_collisions(collision_objects)
       self.patrol_y_collisions(collision_objects)
+    self.die()
 
   def shoot(self):
     pass

@@ -6,18 +6,20 @@ from Barriers import *
 from Guard import *
 from splash_screen import *
 from Bullet import *
+from Object import *
 
 class Game:
-  def __init__(self, screen_width, screen_height, new_object_sprites, new_bullet_sprites):
+  def __init__(self, screen_width, screen_height, new_collision_sprites, new_bullet_sprites, new_guard_sprites, new_player_sprites, new_object_sprites):
     self.size = (screen_width, screen_height)
     self.screen = pygame.display.set_mode(self.size)
     self.is_running = True
     self.alarm = False
     self.all_sprites = pygame.sprite.Group()
-    self.player_sprites = pygame.sprite.Group()
-    self.guard_sprites = pygame.sprite.Group()
-    self.object_sprites = new_object_sprites
+    self.player_sprites = new_player_sprites
+    self.guard_sprites = new_guard_sprites
+    self.collision_sprites = new_collision_sprites
     self.bullet_sprites = new_bullet_sprites
+    self.object_sprites = new_object_sprites
   
   
   def play(self, screen, game_map): # sets up the game including the drawing of objects, splash screen and mainly the game loop
@@ -27,7 +29,7 @@ class Game:
     run = True
     splash_page = Splash(1000, self) # instantiates an object from splash page with a timer
     splash_page.run() # plays the splash page
-    self.draw_map(game_map, self.object_sprites)
+    self.draw_map(game_map, self.collision_sprites)
     while run:
       screen.fill("white") # blanks the whole screen before all objects are drawn again in the updated form
       self.all_sprites.add(*bullet_sprites)
@@ -40,6 +42,7 @@ class Game:
       self.guard.update()
       self.guard2.update()
       self.bullet_sprites.update()
+      self.object_sprites.update()
       for event in pygame.event.get():
         if event.type == pygame.QUIT:
           quit()
@@ -60,6 +63,9 @@ class Game:
     self.all_sprites.add(self.guard2)
     self.guard_sprites.add(self.guard2)
     
+    self.object = Object((70, 560))
+    self.all_sprites.add(self.object)
+    self.object_sprites.add(self.object)
     
     
   def draw_map(self, game_map, collision_objects): # method to use the list containing the location of basewall objects to draw to the screen

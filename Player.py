@@ -33,6 +33,7 @@ class Player(Character):
     self.rotation()
     self.rect.center = self.hitbox_rect.center
     self.shoot(self.rect.centerx, self.rect.centery, self.get_angle())
+    self.die()
   
   
   def get_input(self):
@@ -77,7 +78,6 @@ class Player(Character):
     x_difference = mouse_pos[0] - self.rect.center[0]
     y_difference = mouse_pos[1] - self.rect.center[1]
     self.angle = math.degrees(math.atan2(y_difference, x_difference))
-    #print(self.angle)
     return self.angle
 
   
@@ -87,7 +87,6 @@ class Player(Character):
     self.rect.center = self.hitbox_rect.center
 
   def shoot(self, x, y, angle):
-    #print(self.shoot_cooldown)
     if self.is_shooting == False:
       self.shoot_cooldown -= 1
       return
@@ -97,7 +96,6 @@ class Player(Character):
         return
       else:
           self.shoot_cooldown = 20
-          self.bullet = Bullet(30, self.get_angle(), self.rect.centerx, self.rect.centery)
+          self.bullet = Bullet(30, self.get_angle(), self.rect.centerx, self.rect.centery, "player")
           bullet_sprites.add(self.bullet)
-          print("bullet created")
           

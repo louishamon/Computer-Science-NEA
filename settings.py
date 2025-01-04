@@ -33,3 +33,6 @@ game_map = [
 
 collision_objects = pygame.sprite.Group()
 bullet_sprites = pygame.sprite.Group()
+guard_sprites = pygame.sprite.Group()
+object_sprites = pygame.sprite.Group()
+player_sprites = pygame.sprite.Group()
