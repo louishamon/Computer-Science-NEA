@@ -21,7 +21,7 @@ class Player(Character):
     self.usb = False
     self.suspicious = False
     self.is_shooting = False
-    self.shoot_cooldown = 50
+    self.shoot_cooldown = 10
     
 
   def update(self): # update method for player to run any methods that need to be run every frame

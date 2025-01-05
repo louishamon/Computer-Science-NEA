@@ -35,6 +35,8 @@ class Guard(Character):
 
   def update(self): # update method for guards to run any methods that need to be run every frame
     self.movement()
+    self.rect.centerx += self.x_direction
+    self.rect.centery += self.y_direction
     if self.chase_track:
       self.x_collisions(collision_objects)
       self.y_collisions(collision_objects)

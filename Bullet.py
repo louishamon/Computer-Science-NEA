@@ -12,7 +12,7 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = self.pos)
         self.image.fill("black")
         self.rect.center = (new_x, new_y)
-        self.speed = 50
+        self.speed = 20
         self.x_vel = self.speed * math.cos(math.radians(self.angle))
         self.y_vel = self.speed * math.sin(math.radians(self.angle))
         self.team = new_team
