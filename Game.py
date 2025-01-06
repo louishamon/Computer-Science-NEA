@@ -75,3 +75,6 @@ class Game:
           base_wall = Base_wall((block_width, block_height), (col_index * block_width, row_index * block_height))
           collision_objects.add(base_wall)
           self.all_sprites.add(base_wall)
+
+  def get_guard_pos(self):
+    return (self.guard.rect.centerx, self.guard.rect.centery)
