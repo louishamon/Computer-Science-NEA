@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from Pathfinder import *
+from Pathfinder import Pathfinder
 
 
 class Object(pygame.sprite.Sprite):

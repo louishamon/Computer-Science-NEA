@@ -71,7 +71,7 @@ class Game:
   def draw_map(self, game_map, collision_objects): # method to use the list containing the location of basewall objects to draw to the screen
     for row_index, row in enumerate(game_map):
       for col_index, col in enumerate(row):
-        if col == "X":
+        if col == 1:
           base_wall = Base_wall((block_width, block_height), (col_index * block_width, row_index * block_height))
           collision_objects.add(base_wall)
           self.all_sprites.add(base_wall)
