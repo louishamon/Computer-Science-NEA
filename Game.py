@@ -77,4 +77,4 @@ class Game:
           self.all_sprites.add(base_wall)
 
   def get_guard_pos(self):
-    return (self.guard.rect.centerx, self.guard.rect.centery)
+    return (int(self.guard.rect.centerx), int(self.guard.rect.centery))
