@@ -30,6 +30,7 @@ class Game:
     splash_page = Splash(1000, self) # instantiates an object from splash page with a timer
     splash_page.run() # plays the splash page
     self.draw_map(game_map, self.collision_sprites)
+    
     while run:
       screen.fill("white") # blanks the whole screen before all objects are drawn again in the updated form
       self.all_sprites.add(*bullet_sprites)
@@ -37,15 +38,16 @@ class Game:
       #pygame.draw.rect(self.screen, "black", self.player, 2)
       #pygame.draw.rect(self.screen, "yellow", self.player.hitbox_rect, 2)
       pygame.display.update()
-      clock.tick(60)
+      
       self.player.update()
-      self.guard.update()
-      self.guard2.update()
+      self.guard.update(self.player)
+      self.guard2.update(self.player)
       self.bullet_sprites.update()
-      self.object_sprites.update()
+      #self.object_sprites.update()
       for event in pygame.event.get():
         if event.type == pygame.QUIT:
           quit()
+      clock.tick(60)
 
   def quit(self, screen): # allows game to be exited using the X button in the top right
     pygame.display.quit()
@@ -63,7 +65,7 @@ class Game:
     self.all_sprites.add(self.guard2)
     self.guard_sprites.add(self.guard2)
     
-    self.object = Object((70, 420))
+    self.object = Object((70, 560))
     self.all_sprites.add(self.object)
     self.object_sprites.add(self.object)
     

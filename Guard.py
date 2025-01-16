@@ -2,7 +2,9 @@ import pygame
 from Character import *
 from Game import *
 from settings import *
-from Pathfinder import Pathfinder
+from pathfinding.core.grid import Grid
+from pathfinding.finder.a_star import AStarFinder
+from pathfinding.core.diagonal_movement import DiagonalMovement
 
 class Guard(Character):
   def __init__(self, new_pos, new_type, new_x_direction, new_y_direction):
@@ -34,18 +36,19 @@ class Guard(Character):
   def chase(self):
     pass
 
-  def update(self): # update method for guards to run any methods that need to be run every frame
+  def update(self,player): # update method for guards to run any methods that need to be run every frame
     self.movement()
+    self.find_path(player)
     self.rect.centerx += self.x_direction
     self.rect.centery += self.y_direction
     if self.chase_track:
       self.x_collisions(collision_objects)
       self.y_collisions(collision_objects)
     else:
+      print("lkskd")
       self.patrol_x_collisions(collision_objects)
       self.patrol_y_collisions(collision_objects)
     self.die()
-    
 
   def shoot(self):
     pass
@@ -56,6 +59,14 @@ class Guard(Character):
   def drop(self):
     pass
 
-  def pathfind(self, target, game_map):
-    pathfinder = Pathfinder(game_map, (self.rect.centerx, self.rect.centery), target)
-    pathfinder.create_path()
+  def find_path(self,player):
+    #print(self.start_x, self.start_y)
+    grid = Grid(matrix = game_map)
+    start = grid.node(self.rect.x//70,self.rect.y//70)
+    print(start)
+    end = grid.node(player.rect.x//70,player.rect.y//70)
+    print(end)
+    finder = AStarFinder(diagonal_movement = DiagonalMovement.always)
+    #print(finder.find_path(start, end, self.grid))
+    route,_ = finder.find_path(start, end, grid)
+    print(route)
