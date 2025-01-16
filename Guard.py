@@ -2,6 +2,7 @@ import pygame
 from Character import *
 from Game import *
 from settings import *
+from Pathfinder import Pathfinder
 
 class Guard(Character):
   def __init__(self, new_pos, new_type, new_x_direction, new_y_direction):
@@ -44,6 +45,7 @@ class Guard(Character):
       self.patrol_x_collisions(collision_objects)
       self.patrol_y_collisions(collision_objects)
     self.die()
+    
 
   def shoot(self):
     pass
@@ -53,3 +55,7 @@ class Guard(Character):
 
   def drop(self):
     pass
+
+  def pathfind(self, target, game_map):
+    pathfinder = Pathfinder(game_map, (self.rect.centerx, self.rect.centery), target)
+    pathfinder.create_path()

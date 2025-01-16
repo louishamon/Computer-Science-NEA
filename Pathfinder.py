@@ -18,12 +18,12 @@ class Pathfinder:
     def update(self):
         pass
 
-    def find_path(self):
+    def create_path(self):
         start = self.grid.node(self.start_x, self.start_y)
         end = self.grid.node(self.end_x, self.end_y)
         finder = AStarFinder(diagonal_movement = DiagonalMovement.always)
-        self.path = finder.find_path(start, end, self.grid)
-        print(self.path)
+        print(finder.find_path(start, end, self.grid)[0])
+        #print(self.path)
 
 
     
