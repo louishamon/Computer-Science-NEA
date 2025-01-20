@@ -45,7 +45,6 @@ class Guard(Character):
       self.x_collisions(collision_objects)
       self.y_collisions(collision_objects)
     else:
-      print("lkskd")
       self.patrol_x_collisions(collision_objects)
       self.patrol_y_collisions(collision_objects)
     self.die()
@@ -59,14 +58,15 @@ class Guard(Character):
   def drop(self):
     pass
 
-  def find_path(self,player):
-    #print(self.start_x, self.start_y)
+  def find_path(self, player):
     grid = Grid(matrix = game_map)
-    start = grid.node(self.rect.x//70,self.rect.y//70)
-    print(start)
-    end = grid.node(player.rect.x//70,player.rect.y//70)
-    print(end)
+    start = grid.node(1, 1)
+    #print(start)
+    end = grid.node(3, 1)
+    #print(end)
     finder = AStarFinder(diagonal_movement = DiagonalMovement.always)
     #print(finder.find_path(start, end, self.grid))
-    route,_ = finder.find_path(start, end, grid)
+    route = finder.find_path(start, end, grid)
+    grid.cleanup()
     print(route)
+    #print(_)

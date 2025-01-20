@@ -19,10 +19,12 @@ class Pathfinder:
         pass
 
     def find_path(self):
-        #print(self.start_x, self.start_y)
-        start = self.grid.node(0,0)
-        end = self.grid.node(5,5)
+        start = self.grid.node(1,1)
+        end = self.grid.node(4,5)
         finder = AStarFinder(diagonal_movement = DiagonalMovement.always)
-        #print(finder.find_path(start, end, self.grid))
-        self.path = finder.find_path(start, end, self.grid)
-        print(self.path)
+        self.path, _ = finder.find_path(start, end, self.grid)
+        self.grid_cleanup()
+        #print(self.grid)
+        #print(self.path)
+        
+        
