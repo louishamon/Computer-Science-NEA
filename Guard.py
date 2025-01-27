@@ -59,14 +59,11 @@ class Guard(Character):
     pass
 
   def find_path(self, player):
-    grid = Grid(matrix = game_map)
+    grid = Grid(matrix = game_map, inverse=True)
     start = grid.node(1, 1)
-    #print(start)
     end = grid.node(3, 1)
-    #print(end)
-    finder = AStarFinder(diagonal_movement = DiagonalMovement.always)
-    #print(finder.find_path(start, end, self.grid))
-    route = finder.find_path(start, end, grid)
+    finder = AStarFinder()
+    route,_ = finder.find_path(start, end, grid)
+    coords = [(node.x, node.y) for node in route]
+    print(coords)
     grid.cleanup()
-    print(route)
-    #print(_)
