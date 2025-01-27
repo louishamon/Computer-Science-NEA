@@ -20,12 +20,12 @@ class Object(pygame.sprite.Sprite):
         obj = new_game.get_guard_pos()
         return obj
 
+    def call_find_path(self):
+        from main import new_game
+        new_game.guard.find_path(self.rect.centerx, self.rect.centery)
+
     def collisions(self, player_sprites):
         for i in player_sprites:
             if i.rect.colliderect(self.rect):
+                self.call_find_path()
                 
-                if self.collide == False:
-                    print("test")
-                    pathfinder = Pathfinder(game_map, self.access_guard_pos(), (int(self.rect.centerx), int(self.rect.centery)))
-                    pathfinder.find_path()
-                    self.collide = True

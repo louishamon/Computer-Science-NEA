@@ -42,7 +42,7 @@ class Game:
             self.guard.update(self.player)
             self.guard2.update(self.player)
             self.bullet_sprites.update()
-            #self.object_sprites.update()
+            self.object_sprites.update()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     quit()

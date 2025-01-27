@@ -38,7 +38,6 @@ class Guard(Character):
 
   def update(self,player): # update method for guards to run any methods that need to be run every frame
     self.movement()
-    self.find_path(player)
     self.rect.centerx += self.x_direction
     self.rect.centery += self.y_direction
     if self.chase_track:
@@ -58,10 +57,10 @@ class Guard(Character):
   def drop(self):
     pass
 
-  def find_path(self, player):
+  def find_path(self, end_x, end_y):
     grid = Grid(matrix = game_map, inverse=True)
-    start = grid.node(1, 1)
-    end = grid.node(3, 1)
+    start = grid.node(self.rect.centerx // 70 ,self.rect.centery // 70)
+    end = grid.node(end_x // 70, end_y // 70)
     finder = AStarFinder()
     route,_ = finder.find_path(start, end, grid)
     coords = [(node.x, node.y) for node in route]

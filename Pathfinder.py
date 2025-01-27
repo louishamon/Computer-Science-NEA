@@ -1,11 +1,9 @@
 from pathfinding.core.grid import Grid
 from pathfinding.finder.a_star import AStarFinder
-from pathfinding.core.diagonal_movement import DiagonalMovement
 
 class Pathfinder:
     def __init__(self, new_matrix, new_start_pos, new_end_pos):
         self.matrix = new_matrix
-        self.grid = Grid(matrix = self.matrix)
         self.start_pos = new_start_pos
         self.end_pos = new_end_pos
         self.start_x = int(self.start_pos[0] // 70)
@@ -19,14 +17,13 @@ class Pathfinder:
         pass
 
     def find_path(self):
-        for row in self.matrix:
-            print(row)
-        start = self.grid.node(2,2)
-        end = self.grid.node(4,2)
-        finder = AStarFinder(diagonal_movement = DiagonalMovement.always)
-        self.path, _ = finder.find_path(start, end, self.grid)
-        self.grid.cleanup()
-        #print(self.grid)
-        #print(self.path)
+        grid = Grid(matrix = self.matrix, inverse=True)
+        finder = AStarFinder()
+        start = grid.node(1,1)
+        end = grid.node(3, 1)
+        route,_ = finder.find_path(start, end, grid)
+        coords = [(node.x, node.y) for node in route]
+        print(coords)
+        grid.cleanup()
         
         
