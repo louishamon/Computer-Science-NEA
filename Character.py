@@ -17,6 +17,7 @@ class Character(pygame.sprite.Sprite):
   def x_collisions(self, wall_sprites):
     for i in wall_sprites:
       if i.rect.colliderect(self.rect):
+        print("collision x")
         if self.x_direction > 0:
           self.rect.right = i.rect.left
         else:
@@ -26,6 +27,7 @@ class Character(pygame.sprite.Sprite):
   def y_collisions(self, wall_sprites):
     for i in wall_sprites:
       if i.rect.colliderect(self.rect):
+        print("collision y")
         if self.y_direction < 0:
           self.rect.top = i.rect.bottom
         else:

@@ -39,8 +39,8 @@ class Game:
             pygame.display.update()
 
             self.player.update()
-            self.guard.update(self.player)
-            self.guard2.update(self.player)
+            self.guard.update()
+            self.guard2.update()
             self.bullet_sprites.update()
             self.object_sprites.update()
             for event in pygame.event.get():
@@ -64,7 +64,7 @@ class Game:
         self.all_sprites.add(self.guard2)
         self.guard_sprites.add(self.guard2)
 
-        self.object = Object((70, 560))
+        self.object = Object((70, 560), self.guard)
         self.all_sprites.add(self.object)
         self.object_sprites.add(self.object)
 

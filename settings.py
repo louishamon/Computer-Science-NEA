@@ -7,7 +7,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 block_width = 70
 block_height = 70
 
-guard_movement_speed = 2
+guard_movement_speed = 0
 
 player_hitbox = pygame.Rect(0, 0, 60, 55)
 

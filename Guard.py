@@ -17,7 +17,7 @@ class Guard(Character):
     self.image.fill("yellow")
     self.x_direction = new_x_direction
     self.y_direction = new_y_direction
-    self.chase_track = False
+    self.chase_track = True
   
   def movement(self): # movement method for guards, when moving, the rect position must follow so the coordinates of each guard can be tracked
     self.rect.x += self.x_direction
@@ -36,13 +36,13 @@ class Guard(Character):
   def chase(self):
     pass
 
-  def update(self,player): # update method for guards to run any methods that need to be run every frame
+  def update(self): # update method for guards to run any methods that need to be run every frame
     self.movement()
     self.rect.centerx += self.x_direction
     self.rect.centery += self.y_direction
     if self.chase_track:
-      self.x_collisions(collision_objects)
       self.y_collisions(collision_objects)
+      self.x_collisions(collision_objects)
     else:
       self.patrol_x_collisions(collision_objects)
       self.patrol_y_collisions(collision_objects)
