@@ -1,4 +1,5 @@
 import pygame
+import math
 from Character import *
 from Game import *
 from settings import *
@@ -79,6 +80,7 @@ class Guard(Character):
 
       x_difference = x_coord - self.rect.center[0]
       y_difference = y_coord - self.rect.center[1]
+      print(f"x difference {x_difference} y difference {y_difference}")
       angle = math.degrees(math.atan2(y_difference, x_difference))
       
       print(f"angle {angle}")
