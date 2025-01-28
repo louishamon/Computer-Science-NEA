@@ -61,16 +61,33 @@ class Guard(Character):
 
   def path_rects(self):
     if self.path:
-      self.path_rects = []
+      self.path_rects_group = []
       for node in self.path:
         x = (node[0] * 70) + 35
         y = (node[1] * 70) + 35
         rect = pygame.Rect(x-3, y-3, 6, 6)
-        self.path_rects.append(rect)
-    
+        self.path_rects_group.append(rect)
+
+  def path_direction(self):
+    print("new pos" , self.pos)
+    start = pygame.Vector2(self.pos[0], self.pos[1])
+    end = pygame.Vector2(self.path_rects_group[0].center)
+    self.direction = (end - start).normalize()
+    self.direction = self.direction[0], -self.direction[1]
+    print("direction", self.direction)
+
+  def path_collisions(self):
+    if self.path:
+      for node in self.path_rects_group:
+        if node.colliderect(self.rect):
+          print("collided")
+          del self.path_rects_group[0]
+          del self.path[0]
+          self.path_direction()
 
   def find_path(self, end_x, end_y):
     ## code to find the path and return list containing coordinates of path
+    print("pos" , self.pos)
     grid = Grid(matrix = game_map, inverse=True)
     start = grid.node(self.rect.centerx // 70 ,self.rect.centery // 70)
     end = grid.node(end_x // 70, end_y // 70)
@@ -82,13 +99,16 @@ class Guard(Character):
     grid.cleanup()
     ## code to move guard along path
     if self.path:
-      start = pygame.Vector2(self.pos)
-      end = pygame.Vector2(self.path_rects[0].center)
-      print(f"start: {start}, end: {end}")
-      self.direction = (end - start).normalize()
-      self.direction = self.direction[0], -self.direction[1]
-      self.pos += self.direction * guard_movement_speed
-      print(self.direction)
+      self.path_direction()
+      self.path_collisions()
     else:
       self.direction = pygame.Vector2(0, 0)
       self.path = []
+
+
+
+
+      ##### notes for tomorrow, i think the problem is due to the direction method
+      ####### it must be calculating the direction wrong, or the movement is wrong because otherwise the guard would be moving in the right direction
+      ######## at the moment the guard isnt even passing through the first node in the path so it cant be collision based
+      ######### best of luck strap in i guess
