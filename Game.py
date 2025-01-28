@@ -57,7 +57,7 @@ class Game:
         self.all_sprites.add(self.player)
         self.player_sprites.add(self.player)
 
-        self.guard = Guard((640,320), "guard", 0, guard_movement_speed)
+        self.guard = Guard((605,320), "guard", 0, 0)
         self.all_sprites.add(self.guard)
         self.guard_sprites.add(self.guard)
         self.guard2 = Guard((840,220), "guard", guard_movement_speed, 0)

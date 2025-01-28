@@ -17,7 +17,7 @@ class Guard(Character):
     self.image.fill("yellow")
     self.x_direction = new_x_direction
     self.y_direction = new_y_direction
-    self.chase_track = True
+    self.chase_track = False
   
   def movement(self): # movement method for guards, when moving, the rect position must follow so the coordinates of each guard can be tracked
     self.rect.x += self.x_direction
@@ -56,13 +56,32 @@ class Guard(Character):
 
   def drop(self):
     pass
+    
 
   def find_path(self, end_x, end_y):
+    ## code to find the path and return list containing coordinates of path
     grid = Grid(matrix = game_map, inverse=True)
     start = grid.node(self.rect.centerx // 70 ,self.rect.centery // 70)
     end = grid.node(end_x // 70, end_y // 70)
     finder = AStarFinder()
     route,_ = finder.find_path(start, end, grid)
-    coords = [(node.x, node.y) for node in route]
-    print(coords)
+    path = [(node.x, node.y) for node in route]
+    print(path)
     grid.cleanup()
+    ## code to move guard along path
+    for node in path:
+      print(f"starting coords {self.rect.centerx, self.rect.centery}")
+      x_coord = node[0] * 70 + 35
+      y_coord = node[1] * 70 + 35
+
+      print(f"x, y coords {x_coord, y_coord}")
+      print(f"angle should be 0 {math.degrees(math.atan2(-5, -5))}")
+
+      x_difference = x_coord - self.rect.center[0]
+      y_difference = y_coord - self.rect.center[1]
+      angle = math.degrees(math.atan2(y_difference, x_difference))
+      
+      print(f"angle {angle}")
+
+      self.x_direction = guard_movement_speed * math.cos(math.radians(angle))
+      self.y_direction = guard_movement_speed * math.sin(math.radians(angle))
