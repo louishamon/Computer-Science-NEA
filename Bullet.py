@@ -29,6 +29,5 @@ class Bullet(pygame.sprite.Sprite):
         for i in guard_sprites:
             if i.rect.colliderect(self.rect) and self.team == "player":
                 i.hp -= self.damage
-                print(i.hp)
                 self.kill()
                 

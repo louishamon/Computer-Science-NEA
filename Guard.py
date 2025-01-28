@@ -8,7 +8,7 @@ from pathfinding.finder.a_star import AStarFinder
 from pathfinding.core.diagonal_movement import DiagonalMovement
 
 class Guard(Character):
-  def __init__(self, new_pos, new_type, new_x_direction, new_y_direction):
+  def __init__(self, new_pos, new_type, new_direction):
     super().__init__(new_pos)
     self.held_item = None
     self.type = new_type
@@ -16,37 +16,38 @@ class Guard(Character):
     self.image = pygame.Surface((50, 50))
     self.rect = self.image.get_rect(topleft = self.pos)
     self.image.fill("yellow")
-    self.x_direction = new_x_direction
-    self.y_direction = new_y_direction
+    self.direction = new_direction
     self.chase_track = False
   
   def movement(self): # movement method for guards, when moving, the rect position must follow so the coordinates of each guard can be tracked
-    self.rect.x += self.x_direction
-    self.rect.y += self.y_direction
+    x_pos = self.pos[0] + self.direction[0]
+    y_pos = self.pos[1] + self.direction[1]
+    self.pos = (x_pos, y_pos)
+    self.rect.center = self.pos
     
-  def patrol_x_collisions(self, wall_sprites): # controls x collisions for when the guard is patrolling, allowing guards to bounce off walls
+  def patrol_collisions(self, wall_sprites): # controls x collisions for when the guard is patrolling, allowing guards to bounce off walls
     for i in wall_sprites:
       if i.rect.colliderect(self.rect):
-        self.x_direction = -self.x_direction # inverts direction to bouce back the opposite direction
-
-  def patrol_y_collisions(self, wall_sprites): # controls y collisions for when the guard is patrolling, allowing guards to bounce off walls
-    for i in wall_sprites:
-      if i.rect.colliderect(self.rect):
-        self.y_direction = -self.y_direction
+        if self.direction[0] < 0:
+          self.rect.left = i.rect.right
+          self.direction = (-self.direction[0], self.direction[1])
+        elif self.direction[0] > 0:
+          self.rect.right = i.rect.left
+          self.direction = (-self.direction[0], self.direction[1])
+        else:
+          self.direction = (self.direction[0], -self.direction[1])
   
   def chase(self):
     pass
 
   def update(self): # update method for guards to run any methods that need to be run every frame
     self.movement()
-    self.rect.centerx += self.x_direction
-    self.rect.centery += self.y_direction
+
     if self.chase_track:
       self.y_collisions(collision_objects)
       self.x_collisions(collision_objects)
     else:
-      self.patrol_x_collisions(collision_objects)
-      self.patrol_y_collisions(collision_objects)
+      self.patrol_collisions(collision_objects)
     self.die()
 
   def shoot(self):
@@ -57,6 +58,15 @@ class Guard(Character):
 
   def drop(self):
     pass
+
+  def path_rects(self):
+    if self.path:
+      self.path_rects = []
+      for node in self.path:
+        x = (node[0] * 70) + 35
+        y = (node[1] * 70) + 35
+        rect = pygame.Rect(x-3, y-3, 6, 6)
+        self.path_rects.append(rect)
     
 
   def find_path(self, end_x, end_y):
@@ -66,24 +76,18 @@ class Guard(Character):
     end = grid.node(end_x // 70, end_y // 70)
     finder = AStarFinder()
     route,_ = finder.find_path(start, end, grid)
-    path = [(node.x, node.y) for node in route]
-    print(path)
+    self.path = [(node.x, node.y) for node in route]
+    self.path_rects()
+    print(self.path)
     grid.cleanup()
     ## code to move guard along path
-    for node in path:
-      print(f"starting coords {self.rect.centerx, self.rect.centery}")
-      x_coord = node[0] * 70 + 35
-      y_coord = node[1] * 70 + 35
-
-      print(f"x, y coords {x_coord, y_coord}")
-      print(f"angle should be 0 {math.degrees(math.atan2(-5, -5))}")
-
-      x_difference = x_coord - self.rect.center[0]
-      y_difference = y_coord - self.rect.center[1]
-      print(f"x difference {x_difference} y difference {y_difference}")
-      angle = math.degrees(math.atan2(y_difference, x_difference))
-      
-      print(f"angle {angle}")
-
-      self.x_direction = guard_movement_speed * math.cos(math.radians(angle))
-      self.y_direction = guard_movement_speed * math.sin(math.radians(angle))
+    if self.path:
+      start = pygame.Vector2(self.pos)
+      end = pygame.Vector2(self.path_rects[0].center)
+      print(f"start: {start}, end: {end}")
+      self.direction = (end - start).normalize()
+      self.rect.center += self.direction * guard_movement_speed
+      print(self.direction)
+    else:
+      self.direction = pygame.Vector2(0, 0)
+      self.path = []
