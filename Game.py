@@ -64,7 +64,7 @@ class Game:
         self.all_sprites.add(self.guard2)
         self.guard_sprites.add(self.guard2)
 
-        self.object = Object((70, 560), self.guard)
+        self.object = Object((240, 70), self.guard)
         self.all_sprites.add(self.object)
         self.object_sprites.add(self.object)
 

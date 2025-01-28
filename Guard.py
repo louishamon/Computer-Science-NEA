@@ -86,7 +86,8 @@ class Guard(Character):
       end = pygame.Vector2(self.path_rects[0].center)
       print(f"start: {start}, end: {end}")
       self.direction = (end - start).normalize()
-      self.rect.center += self.direction * guard_movement_speed
+      self.direction = self.direction[0], -self.direction[1]
+      self.pos += self.direction * guard_movement_speed
       print(self.direction)
     else:
       self.direction = pygame.Vector2(0, 0)
