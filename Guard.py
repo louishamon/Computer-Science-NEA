@@ -18,6 +18,8 @@ class Guard(Character):
     self.image.fill("yellow")
     self.direction = new_direction
     self.chase_track = False
+    self.path = None
+    self.path_rects_group = None
   
   def movement(self): # movement method for guards, when moving, the rect position must follow so the coordinates of each guard can be tracked
     x_pos = self.pos[0] + self.direction[0]
@@ -42,7 +44,7 @@ class Guard(Character):
 
   def update(self): # update method for guards to run any methods that need to be run every frame
     self.movement()
-
+    self.path_collisions()
     if self.chase_track:
       self.y_collisions(collision_objects)
       self.x_collisions(collision_objects)
@@ -66,24 +68,40 @@ class Guard(Character):
         x = (node[0] * 70) + 35
         y = (node[1] * 70) + 35
         rect = pygame.Rect(x-3, y-3, 6, 6)
+        #print(rect.center)
         self.path_rects_group.append(rect)
 
   def path_direction(self):
-    print("new pos" , self.pos)
     start = pygame.Vector2(self.pos[0], self.pos[1])
     end = pygame.Vector2(self.path_rects_group[0].center)
-    self.direction = (end - start).normalize()
-    self.direction = self.direction[0], -self.direction[1]
-    print("direction", self.direction)
+    print(f"start {start} end {end}")
+    vector = end - start
+    angle = math.degrees(math.atan2(-vector[1], vector[0]))
+    angle = (angle +90) % 360
+    print(f"angle {angle}")
+    #angle2 = math.degrees(math.atan2(35, -10))
+    #print(f"angle2 {angle2}")
+    x_direction = guard_movement_speed * math.sin(math.radians(angle))
+    y_direction = guard_movement_speed * math.cos(math.radians(angle))
+    self.direction = (x_direction, y_direction)
+    print(f"direction {self.direction}")
+    self.direction = self.direction[0], self.direction[1]
 
   def path_collisions(self):
-    if self.path:
+    if self.path_rects_group:
+      
       for node in self.path_rects_group:
-        if node.colliderect(self.rect):
+        print(node)
+        #print(self.pos[0] + 35, self.pos[1] + 35)
+        print(self.rect.center)
+        print(self.path)
+        #print(self.rect.center)
+        if node.collidepoint(self.rect.center):
           print("collided")
           del self.path_rects_group[0]
-          del self.path[0]
           self.path_direction()
+    else:
+      return
 
   def find_path(self, end_x, end_y):
     ## code to find the path and return list containing coordinates of path
@@ -104,11 +122,3 @@ class Guard(Character):
     else:
       self.direction = pygame.Vector2(0, 0)
       self.path = []
-
-
-
-
-      ##### notes for tomorrow, i think the problem is due to the direction method
-      ####### it must be calculating the direction wrong, or the movement is wrong because otherwise the guard would be moving in the right direction
-      ######## at the moment the guard isnt even passing through the first node in the path so it cant be collision based
-      ######### best of luck strap in i guess

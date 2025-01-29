@@ -40,6 +40,9 @@ class Game:
 
             self.player.update()
             self.guard.update()
+            if self.guard.path:
+                for i in self.guard.path_rects_group:
+                    pygame.draw.rect(self.screen, "red", i, 2)
             self.guard2.update()
             self.bullet_sprites.update()
             self.object_sprites.update()
