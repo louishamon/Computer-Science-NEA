@@ -37,15 +37,7 @@ class Game:
             #pygame.draw.rect(self.screen, "black", self.player, 2)
             #pygame.draw.rect(self.screen, "yellow", self.player.hitbox_rect, 2)
             pygame.display.update()
-
-            self.player.update()
-            self.guard.update()
-            if self.guard.path:
-                for i in self.guard.path_rects_group:
-                    pygame.draw.rect(self.screen, "red", i, 2)
-            self.guard2.update()
-            self.bullet_sprites.update()
-            self.object_sprites.update()
+            self.all_sprites.update()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     quit()
@@ -60,12 +52,15 @@ class Game:
         self.all_sprites.add(self.player)
         self.player_sprites.add(self.player)
 
-        self.guard = Guard((605,280), "guard", (0, 0))
+        self.guard = Guard((605,280), "guard", (0, guard_movement_speed))
         self.all_sprites.add(self.guard)
         self.guard_sprites.add(self.guard)
         self.guard2 = Guard((840,220), "guard", (guard_movement_speed, 0))
         self.all_sprites.add(self.guard2)
         self.guard_sprites.add(self.guard2)
+        self.guard3 = Guard((100, 500), "guard", (0, guard_movement_speed))
+        self.all_sprites.add(self.guard3)
+        self.guard_sprites.add(self.guard3)
 
         self.object = Object((240, 70), self.guard)
         self.all_sprites.add(self.object)
