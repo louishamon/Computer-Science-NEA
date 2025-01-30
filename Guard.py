@@ -75,17 +75,14 @@ class Guard(Character):
     if self.path_rects_group:
       start = pygame.Vector2(self.pos[0], self.pos[1])
       end = pygame.Vector2(self.path_rects_group[0].center)
-      print(f"start {start} end {end}")
       vector = end - start
       angle = math.degrees(math.atan2(-vector[1], vector[0]))
       angle = (angle +90) % 360
-      print(f"angle {angle}")
       #angle2 = math.degrees(math.atan2(35, -10))
       #print(f"angle2 {angle2}")
       x_direction = guard_movement_speed * math.sin(math.radians(angle))
       y_direction = guard_movement_speed * math.cos(math.radians(angle))
       self.direction = (x_direction, y_direction)
-      print(f"direction {self.direction}")
       self.direction = self.direction[0], self.direction[1]
     else:
       self.direction = pygame.Vector2(0, 0)
@@ -93,15 +90,8 @@ class Guard(Character):
 
   def path_collisions(self):
     if self.path_rects_group:
-      
       for node in self.path_rects_group:
-        print(node)
-        #print(self.pos[0] + 35, self.pos[1] + 35)
-        print(self.rect.center)
-        print(self.path)
-        #print(self.rect.center)
         if node.collidepoint(self.rect.center):
-          print("collided")
           del self.path_rects_group[0]
           self.path_direction()
     else:
@@ -109,7 +99,6 @@ class Guard(Character):
 
   def find_path(self, end_x, end_y):
     ## code to find the path and return list containing coordinates of path
-    print("pos" , self.pos)
     grid = Grid(matrix = game_map, inverse=True)
     start = grid.node(self.rect.centerx // 70 ,self.rect.centery // 70)
     end = grid.node(end_x // 70, end_y // 70)
@@ -117,7 +106,6 @@ class Guard(Character):
     route,_ = finder.find_path(start, end, grid)
     self.path = [(node.x, node.y) for node in route]
     self.path_rects()
-    print(self.path)
     grid.cleanup()
     ## code to move guard along path
     if self.path:

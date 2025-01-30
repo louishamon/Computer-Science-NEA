@@ -52,10 +52,10 @@ class Game:
         self.all_sprites.add(self.player)
         self.player_sprites.add(self.player)
 
-        self.guard = Guard((605,280), "guard", (0, guard_movement_speed))
+        self.guard = Guard((650,280), "guard", (0, guard_movement_speed))
         self.all_sprites.add(self.guard)
         self.guard_sprites.add(self.guard)
-        self.guard2 = Guard((840,220), "guard", (guard_movement_speed, 0))
+        self.guard2 = Guard((840,240), "guard", (guard_movement_speed, 0))
         self.all_sprites.add(self.guard2)
         self.guard_sprites.add(self.guard2)
         self.guard3 = Guard((100, 500), "guard", (0, guard_movement_speed))
