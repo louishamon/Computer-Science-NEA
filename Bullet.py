@@ -3,7 +3,7 @@ import math
 from settings import *
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, new_damage, new_angle, new_x, new_y, new_team):
+    def __init__(self, new_damage, new_angle, new_x, new_y, new_team, new_shooter):
         super().__init__()
         self.damage = new_damage
         self.angle = new_angle
@@ -16,6 +16,8 @@ class Bullet(pygame.sprite.Sprite):
         self.x_vel = self.speed * math.cos(math.radians(self.angle))
         self.y_vel = self.speed * math.sin(math.radians(self.angle))
         self.team = new_team
+        self.seen = False
+        self.shooter = new_shooter
 
     def update(self):
         self.rect.x += self.x_vel
@@ -30,4 +32,7 @@ class Bullet(pygame.sprite.Sprite):
             if i.rect.colliderect(self.rect) and self.team == "player":
                 i.hp -= self.damage
                 self.kill()
-                
+        for i in player_sprites:
+            if i.rect.colliderect(self.rect) and self.team == "sight":
+                self.shooter.player_seen = True
+                self.kill()

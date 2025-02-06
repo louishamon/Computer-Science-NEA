@@ -96,6 +96,6 @@ class Player(Character):
         return
       else:
           self.shoot_cooldown = 20
-          self.bullet = Bullet(30, self.get_angle(), self.rect.centerx, self.rect.centery, "player")
+          self.bullet = Bullet(30, self.get_angle(), self.rect.centerx, self.rect.centery, "player", self)
           bullet_sprites.add(self.bullet)
           

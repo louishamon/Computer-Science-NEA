@@ -76,3 +76,6 @@ class Game:
 
     def get_guard_pos(self):
         return (self.guard.rect.centerx, self.guard.rect.centery)
+    
+    def get_player_pos(self):
+        return (self.player.rect.centerx, self.player.rect.centery)

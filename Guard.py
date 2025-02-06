@@ -3,6 +3,7 @@ import math
 from Character import *
 from Game import *
 from settings import *
+from Bullet import *
 from pathfinding.core.grid import Grid
 from pathfinding.finder.a_star import AStarFinder
 from pathfinding.core.diagonal_movement import DiagonalMovement
@@ -20,6 +21,7 @@ class Guard(Character):
     self.chase_track = False
     self.path = None
     self.path_rects_group = None
+    self.player_seen = False
   
   def movement(self): # movement method for guards, when moving, the rect position must follow so the coordinates of each guard can be tracked
     x_pos = self.pos[0] + self.direction[0]
@@ -49,6 +51,7 @@ class Guard(Character):
   def update(self): # update method for guards to run any methods that need to be run every frame
     self.movement()
     self.path_collisions()
+    self.player_detection()
     if self.chase_track:
       self.y_collisions(collision_objects)
       self.x_collisions(collision_objects)
@@ -116,3 +119,30 @@ class Guard(Character):
     else:
       self.direction = pygame.Vector2(0, 0)
       self.path = []
+
+
+  def access_player_pos(self):
+    from main import new_game
+    obj = new_game.get_player_pos()
+    return obj
+  
+  #def cooldown(self):
+    length = 2000
+    start_time = pygame.time.get_ticks()
+    difference = pygame.time.get_ticks() - start_time
+    while difference < length:
+      difference = pygame.time.get_ticks() - start_time
+    return True
+
+  def player_detection(self):
+    print(self.cooldown())
+    if self.cooldown():
+      player_pos = self.access_player_pos()
+      x_difference = player_pos[0] - self.rect.centerx
+      y_difference = player_pos[1] - self.rect.centery
+      angle = math.degrees(math.atan2(y_difference, x_difference))
+      bullet = Bullet(0, angle, self.rect.centerx, self.rect.centery, "sight", self)
+      bullet_sprites.add(bullet)
+      if self.player_seen:
+        self.find_path(player_pos[0], player_pos[1])
+        
