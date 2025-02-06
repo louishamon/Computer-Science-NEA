@@ -36,7 +36,11 @@ class Guard(Character):
         elif self.direction[0] > 0:
           self.rect.right = i.rect.left
           self.direction = (-self.direction[0], self.direction[1])
-        else:
+        elif self.direction[1] < 0:
+          self.rect.top = i.rect.bottom
+          self.direction = (self.direction[0], -self.direction[1])
+        elif self.direction[1] > 0:
+          self.rect.bottom = i.rect.top
           self.direction = (self.direction[0], -self.direction[1])
   
   def chase(self):
