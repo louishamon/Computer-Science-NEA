@@ -78,8 +78,6 @@ class Guard(Character):
       vector = end - start
       angle = math.degrees(math.atan2(-vector[1], vector[0]))
       angle = (angle +90) % 360
-      #angle2 = math.degrees(math.atan2(35, -10))
-      #print(f"angle2 {angle2}")
       x_direction = guard_movement_speed * math.sin(math.radians(angle))
       y_direction = guard_movement_speed * math.cos(math.radians(angle))
       self.direction = (x_direction, y_direction)
