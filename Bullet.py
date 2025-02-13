@@ -8,16 +8,23 @@ class Bullet(pygame.sprite.Sprite):
         self.damage = new_damage
         self.angle = new_angle
         self.pos = (new_x, new_y)
+        self.team = new_team
         self.image = pygame.Surface((10, 10))
         self.rect = self.image.get_rect(topleft = self.pos)
-        self.image.fill("black")
+        self.image.fill(self.get_colour())
         self.rect.center = (new_x, new_y)
         self.speed = 20
         self.x_vel = self.speed * math.cos(math.radians(self.angle))
         self.y_vel = self.speed * math.sin(math.radians(self.angle))
-        self.team = new_team
         self.seen = False
         self.shooter = new_shooter
+
+    def get_colour(self):
+        if self.damage == 0:
+            return "white"
+        else:
+            return "black"
+    
 
     def update(self):
         self.rect.x += self.x_vel

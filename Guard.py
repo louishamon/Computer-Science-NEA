@@ -135,8 +135,7 @@ class Guard(Character):
     return True
 
   def player_detection(self):
-    print(self.cooldown())
-    if self.cooldown():
+    if not self.path:
       player_pos = self.access_player_pos()
       x_difference = player_pos[0] - self.rect.centerx
       y_difference = player_pos[1] - self.rect.centery

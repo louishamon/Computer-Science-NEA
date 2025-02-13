@@ -32,11 +32,12 @@ class Game:
 
         while run:
             screen.fill("white") # blanks the whole screen before all objects are drawn again in the updated form
-            self.all_sprites.add(*bullet_sprites)
+            self.bullet_sprites.draw(screen)
             self.all_sprites.draw(screen)
             #pygame.draw.rect(self.screen, "black", self.player, 2)
             #pygame.draw.rect(self.screen, "yellow", self.player.hitbox_rect, 2)
             pygame.display.update()
+            self.bullet_sprites.update()
             self.all_sprites.update()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
