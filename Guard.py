@@ -19,9 +19,11 @@ class Guard(Character):
     self.image.fill("yellow")
     self.direction = new_direction
     self.chase_track = False
-    self.path = None
-    self.path_rects_group = None
+    self.path = []
+    self.path_rects_group = []
     self.player_seen = False
+    self.previous_path_time = 0
+    self.sight_bullet = None
   
   def movement(self): # movement method for guards, when moving, the rect position must follow so the coordinates of each guard can be tracked
     x_pos = self.pos[0] + self.direction[0]
@@ -51,13 +53,20 @@ class Guard(Character):
   def update(self): # update method for guards to run any methods that need to be run every frame
     self.movement()
     self.path_collisions()
-    self.player_detection()
+    print(self.path)
+    if pygame.time.get_ticks() - self.previous_path_time > 500 and not self.path:
+      self.previous_path_time = pygame.time.get_ticks()
+      self.player_detection()
+    else:
+      pass
+    
     if self.chase_track:
       self.y_collisions(collision_objects)
       self.x_collisions(collision_objects)
     else:
       self.patrol_collisions(collision_objects)
     self.die()
+    self.player_seen = False
 
   def shoot(self):
     pass
@@ -70,40 +79,47 @@ class Guard(Character):
 
   def path_rects(self):
     if self.path:
-      self.path_rects_group = []
       for node in self.path:
         x = (node[0] * 70) + 35
         y = (node[1] * 70) + 35
         rect = pygame.Rect(x-3, y-3, 6, 6)
-        #print(rect.center)
         self.path_rects_group.append(rect)
 
   def path_direction(self):
     if self.path_rects_group:
-      start = pygame.Vector2(self.pos[0], self.pos[1])
-      end = pygame.Vector2(self.path_rects_group[0].center)
-      vector = end - start
-      angle = math.degrees(math.atan2(-vector[1], vector[0]))
-      angle = (angle +90) % 360
-      x_direction = guard_movement_speed * math.sin(math.radians(angle))
-      y_direction = guard_movement_speed * math.cos(math.radians(angle))
-      self.direction = (x_direction, y_direction)
-      self.direction = self.direction[0], self.direction[1]
+      if len(self.path_rects_group) > 1:
+        start = pygame.Vector2(self.pos[0], self.pos[1])
+        end = pygame.Vector2(self.path_rects_group[1].center)
+        vector = end - start
+        angle = math.degrees(math.atan2(-vector[1], vector[0]))
+        angle = (angle +90) % 360
+        x_direction = guard_movement_speed * math.sin(math.radians(angle))
+        y_direction = guard_movement_speed * math.cos(math.radians(angle))
+        self.direction = (x_direction, y_direction)
+        self.direction = self.direction[0], self.direction[1]
+      else:
+        self.direction = pygame.Vector2(0, 0)
     else:
       self.direction = pygame.Vector2(0, 0)
-      self.path = []
 
   def path_collisions(self):
-    if self.path_rects_group:
+    temp_path = self.path
+    if self.path_rects_group and self.path:
       for node in self.path_rects_group:
         if node.collidepoint(self.rect.center):
+          print("collide")
           del self.path_rects_group[0]
-          self.path_direction()
+          del self.path[0]
+          self.player_detection()
+          if temp_path == self.path:
+            self.path_direction()
     else:
-      return
+      self.path = []
+      
 
   def find_path(self, end_x, end_y):
     ## code to find the path and return list containing coordinates of path
+    self.path_rects_group = []
     grid = Grid(matrix = game_map, inverse=True)
     start = grid.node(self.rect.centerx // 70 ,self.rect.centery // 70)
     end = grid.node(end_x // 70, end_y // 70)
@@ -115,10 +131,9 @@ class Guard(Character):
     ## code to move guard along path
     if self.path:
       self.path_direction()
-      self.path_collisions()
     else:
       self.direction = pygame.Vector2(0, 0)
-      self.path = []
+      #self.path = []
 
 
   def access_player_pos(self):
@@ -135,13 +150,11 @@ class Guard(Character):
     return True
 
   def player_detection(self):
-    if not self.path:
-      player_pos = self.access_player_pos()
-      x_difference = player_pos[0] - self.rect.centerx
-      y_difference = player_pos[1] - self.rect.centery
-      angle = math.degrees(math.atan2(y_difference, x_difference))
-      bullet = Bullet(0, angle, self.rect.centerx, self.rect.centery, "sight", self)
-      bullet_sprites.add(bullet)
-      if self.player_seen:
-        self.find_path(player_pos[0], player_pos[1])
+    player_pos = self.access_player_pos()
+    x_difference = player_pos[0] - self.rect.centerx
+    y_difference = player_pos[1] - self.rect.centery
+    angle = math.degrees(math.atan2(y_difference, x_difference))
+    bullet = Bullet(0, angle, self.rect.centerx, self.rect.centery, "sight", self)
+    bullet_sprites.add(bullet)
+      
         

@@ -13,7 +13,7 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = self.pos)
         self.image.fill(self.get_colour())
         self.rect.center = (new_x, new_y)
-        self.speed = 20
+        self.speed = 40
         self.x_vel = self.speed * math.cos(math.radians(self.angle))
         self.y_vel = self.speed * math.sin(math.radians(self.angle))
         self.seen = False
@@ -21,7 +21,7 @@ class Bullet(pygame.sprite.Sprite):
 
     def get_colour(self):
         if self.damage == 0:
-            return "white"
+            return "red"
         else:
             return "black"
     
@@ -41,5 +41,8 @@ class Bullet(pygame.sprite.Sprite):
                 self.kill()
         for i in player_sprites:
             if i.rect.colliderect(self.rect) and self.team == "sight":
-                self.shooter.player_seen = True
+                #if pygame.time.get_ticks() - self.shooter.previous_path_time > 1000:
+                    #self.shooter.previous_path_time = pygame.time.get_ticks()
+                self.shooter.find_path(i.rect.centerx, i.rect.centery)
+                print(self.shooter.path)
                 self.kill()
