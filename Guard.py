@@ -54,13 +54,13 @@ class Guard(Character):
     self.movement()
     self.path_collisions()
     print(self.path)
-    if pygame.time.get_ticks() - self.previous_path_time > 500 and not self.path:
+    if not self.path:
       self.previous_path_time = pygame.time.get_ticks()
       self.player_detection()
     else:
       pass
-    
-    if self.chase_track:
+
+    if self.path:
       self.y_collisions(collision_objects)
       self.x_collisions(collision_objects)
     else:
@@ -107,9 +107,9 @@ class Guard(Character):
     if self.path_rects_group and self.path:
       for node in self.path_rects_group:
         if node.collidepoint(self.rect.center):
-          print("collide")
           del self.path_rects_group[0]
           del self.path[0]
+          self.direction = pygame.Vector2(0, 0)
           self.player_detection()
           if temp_path == self.path:
             self.path_direction()
@@ -141,13 +141,6 @@ class Guard(Character):
     obj = new_game.get_player_pos()
     return obj
   
-  #def cooldown(self):
-    length = 2000
-    start_time = pygame.time.get_ticks()
-    difference = pygame.time.get_ticks() - start_time
-    while difference < length:
-      difference = pygame.time.get_ticks() - start_time
-    return True
 
   def player_detection(self):
     player_pos = self.access_player_pos()

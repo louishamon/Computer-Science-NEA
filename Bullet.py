@@ -21,7 +21,7 @@ class Bullet(pygame.sprite.Sprite):
 
     def get_colour(self):
         if self.damage == 0:
-            return "red"
+            return "white"
         else:
             return "black"
     
