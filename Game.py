@@ -43,6 +43,7 @@ class Game:
             self.all_sprites.update()
             if self.player.hp < 1:
                 self.game_over()
+                self.create_object()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     quit()
@@ -52,6 +53,8 @@ class Game:
         screen.fill("white")
         game_over = Game_over(self)
         game_over.run()
+        for guard in guard_sprites:
+            guard.kill()
 
     
 

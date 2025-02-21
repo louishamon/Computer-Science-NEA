@@ -19,6 +19,6 @@ class Game_over():
                     quit()
             self.screen.blit(self.image, (0, 0))
             if restart.click_check():
-                pass
+                run = False
             pygame.display.flip()
             self.clock.tick(60)
