@@ -24,6 +24,7 @@ class Guard(Character):
     self.player_seen = False
     self.previous_path_time = 0
     self.sight_bullet = None
+    self.previous_shot = 0
   
   def movement(self): # movement method for guards, when moving, the rect position must follow so the coordinates of each guard can be tracked
     x_pos = self.pos[0] + self.direction[0]
@@ -53,12 +54,14 @@ class Guard(Character):
   def update(self): # update method for guards to run any methods that need to be run every frame
     self.movement()
     self.path_collisions()
-    print(self.path)
     if not self.path:
+      self.chase_track = False
       self.previous_path_time = pygame.time.get_ticks()
       self.player_detection()
     else:
       pass
+
+    self.shoot()
 
     if self.path:
       self.y_collisions(collision_objects)
@@ -105,7 +108,9 @@ class Guard(Character):
   def path_collisions(self):
     temp_path = self.path
     if self.path_rects_group and self.path:
-      for node in self.path_rects_group:
+      for index, node in enumerate(self.path_rects_group):
+        if index == len(self.path_rects_group) + 1:
+          break
         if node.collidepoint(self.rect.center):
           del self.path_rects_group[0]
           del self.path[0]
@@ -150,4 +155,14 @@ class Guard(Character):
     bullet = Bullet(0, angle, self.rect.centerx, self.rect.centery, "sight", self)
     bullet_sprites.add(bullet)
       
-        
+    
+  def shoot(self):
+    if self.chase_track:
+      if pygame.time.get_ticks() - self.previous_shot > 500:
+        self.previous_shot = pygame.time.get_ticks()
+        player_pos = self.access_player_pos()
+        x_difference = player_pos[0] - self.rect.centerx
+        y_difference = player_pos[1] - self.rect.centery
+        angle = math.degrees(math.atan2(y_difference, x_difference))
+        bullet = Bullet(20, angle, self.rect.centerx, self.rect.centery, "guard", self)
+        bullet_sprites.add(bullet)

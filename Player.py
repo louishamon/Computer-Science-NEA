@@ -95,7 +95,24 @@ class Player(Character):
         self.shoot_cooldown -= 1
         return
       else:
-          self.shoot_cooldown = 20
+          self.shoot_cooldown = 10
           self.bullet = Bullet(30, self.get_angle(), self.rect.centerx, self.rect.centery, "player", self)
           bullet_sprites.add(self.bullet)
           
+  def reset(self, new_pos):
+    super().__init__(new_pos)
+    self.image_setup = pygame.image.load("survivor_no_background.png").convert_alpha() # imports the image and converts for better performance
+    self.image = pygame.transform.scale(self.image_setup, (60, 40)) # changing dimensions of image
+    self.base_player_image = self.image
+    self.rect = self.image.get_rect(topleft = self.pos) # creates player rectangle using the image dimensions
+    self.hitbox_rect = player_hitbox # creates the hitbox rectangle to handle collisions
+    self.hitbox_rect.center = self.rect.center
+    self.disguise = None # stores the disguise currently worn by the player for guards to ignore them
+    self.ammo = 30
+    self.gun_held = (30, 2)
+    self.keycard = False # stores if the player has a keycard
+    self.vault_keycard = False # stores if the player has a vault keycard
+    self.usb = False
+    self.suspicious = False
+    self.is_shooting = False
+    self.shoot_cooldown = 10

@@ -7,6 +7,8 @@ from Guard import *
 from splash_screen import *
 from Bullet import *
 from Object import *
+from Game_over import *
+from Button import *
 
 class Game:
     def __init__(self, screen_width, screen_height, new_collision_sprites, new_bullet_sprites, new_guard_sprites, new_player_sprites, new_object_sprites):
@@ -39,10 +41,19 @@ class Game:
             pygame.display.update()
             self.bullet_sprites.update()
             self.all_sprites.update()
+            if self.player.hp < 1:
+                self.game_over()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     quit()
             clock.tick(60)
+
+    def game_over(self):
+        screen.fill("white")
+        game_over = Game_over(self)
+        game_over.run()
+
+    
 
     def quit(self, screen): # allows game to be exited using the X button in the top right
         pygame.display.quit()
