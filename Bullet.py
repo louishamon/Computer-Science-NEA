@@ -34,15 +34,17 @@ class Bullet(pygame.sprite.Sprite):
     def collisions(self, collision_objects, guard_sprites):
         for i in collision_objects:
             if i.rect.colliderect(self.rect):
+                if self.team == "sight":
+                    self.shooter.chase_track = False
                 self.kill()
         for i in guard_sprites:
             if i.rect.colliderect(self.rect) and self.team == "player":
                 i.hp -= self.damage
+                if i.hp < 1 and self.shooter.hp < 76:
+                    self.shooter.hp += 25
                 self.kill()
         for i in player_sprites:
             if i.rect.colliderect(self.rect) and self.team == "sight":
-                #if pygame.time.get_ticks() - self.shooter.previous_path_time > 1000:
-                    #self.shooter.previous_path_time = pygame.time.get_ticks()
                 self.shooter.find_path(i.rect.centerx, i.rect.centery)
                 self.shooter.chase_track = True
                 self.kill()

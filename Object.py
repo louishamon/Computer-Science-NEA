@@ -8,7 +8,7 @@ class Object(pygame.sprite.Sprite):
         self.pos = new_pos
         self.image = pygame.Surface((50, 50))
         self.rect = self.image.get_rect(topleft = self.pos)
-        self.image.fill("blue")
+        self.image.fill("grey")
         self.collide = False
         self.guard = new_guard
 

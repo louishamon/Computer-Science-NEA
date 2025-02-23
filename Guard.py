@@ -48,8 +48,6 @@ class Guard(Character):
           self.rect.bottom = i.rect.top
           self.direction = (self.direction[0], -self.direction[1])
   
-  def chase(self):
-    pass
 
   def update(self): # update method for guards to run any methods that need to be run every frame
     self.movement()
@@ -71,8 +69,6 @@ class Guard(Character):
     self.die()
     self.player_seen = False
 
-  def shoot(self):
-    pass
 
   def held_item_gen(self):
     pass
