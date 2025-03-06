@@ -43,6 +43,7 @@ class Game:
             pygame.display.update()
             self.bullet_sprites.update()
             self.all_sprites.update()
+            print(self.guard.path)
             if self.player.hp < 1:
                 for sprite in self.all_sprites:
                     sprite.kill()

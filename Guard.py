@@ -27,13 +27,25 @@ class Guard(Character):
     self.previous_path_time = 0
     self.sight_bullet = None
     self.previous_shot = 0
+    self.last_seen = None
   
   def movement(self): # movement method for guards, when moving, the rect position must follow so the coordinates of each guard can be tracked
     x_pos = self.pos[0] + self.direction[0]
     y_pos = self.pos[1] + self.direction[1]
     self.pos = (x_pos, y_pos)
     self.rect.center = self.pos
-    
+
+  def chase_movement(self): # movement method for guards when chasing the player
+    player_pos = self.access_player_pos()
+    if player_pos[0] > self.rect.centerx:
+      self.direction = (guard_movement_speed, self.direction[1])
+    elif player_pos[0] < self.rect.centerx:
+      self.direction = (-guard_movement_speed, self.direction[1])
+    if player_pos[1] > self.rect.centery:
+      self.direction = (self.direction[0], guard_movement_speed)
+    elif player_pos[1] < self.rect.centery:
+      self.direction = (self.direction[0], -guard_movement_speed)
+
   def patrol_collisions(self, wall_sprites): # controls x collisions for when the guard is patrolling, allowing guards to bounce off walls
     for i in wall_sprites:
       if i.rect.colliderect(self.rect):
@@ -50,6 +62,25 @@ class Guard(Character):
           self.rect.bottom = i.rect.top
           self.direction = (self.direction[0], -self.direction[1])
   
+  def chase_x_collisions(self, wall_sprites):
+    for i in wall_sprites:
+      if i.rect.colliderect(self.rect):
+        if self.direction[0] > 0:
+          self.direction = (0, self.direction[1])
+          self.rect.right = i.rect.left
+        else:
+          self.rect.left = i.rect.right
+
+
+  def chase_y_collisions(self, wall_sprites):
+    for i in wall_sprites:
+      if i.rect.colliderect(self.rect):
+        if self.direction[1] < 0:
+          self.direction = (self.direction[0], 0)
+          self.rect.top = i.rect.bottom
+        else:
+          self.rect.bottom = i.rect.top
+  
 
   def update(self): # update method for guards to run any methods that need to be run every frame
     self.movement()
@@ -62,18 +93,24 @@ class Guard(Character):
     else:
       pass
 
+    if self.chase_track:
+      self.chase_movement()
+      self.path = []
+    elif self.last_seen and not self.chase_track and not self.path:
+      self.find_path(self.last_seen[0], self.last_seen[1])
+    
+
     self.shoot()
 
-    if self.path:
-      self.y_collisions(collision_objects)
-      self.x_collisions(collision_objects)
+    if self.chase_track:
+      self.chase_y_collisions(collision_objects)
+      self.chase_x_collisions(collision_objects)
     else:
       self.patrol_collisions(collision_objects)
 
     if self.hp <= 0:
       self.drop()
     self.die()
-    self.chase_track = False
 
 
   def held_item_gen(self):
@@ -104,7 +141,7 @@ class Guard(Character):
     if self.path_rects_group:
       if len(self.path_rects_group) > 1:
         start = pygame.Vector2(self.pos[0], self.pos[1])
-        end = pygame.Vector2(self.path_rects_group[1].center)
+        end = pygame.Vector2(self.path_rects_group[0].center)
         vector = end - start
         angle = math.degrees(math.atan2(-vector[1], vector[0]))
         angle = (angle +90) % 360

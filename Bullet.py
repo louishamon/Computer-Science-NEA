@@ -45,7 +45,8 @@ class Bullet(pygame.sprite.Sprite):
                 self.kill()
         for i in player_sprites:
             if i.rect.colliderect(self.rect) and self.team == "sight":
-                self.shooter.find_path(i.rect.centerx, i.rect.centery)
+                self.shooter.last_seen = (i.rect.centerx, i.rect.centery)
+                #self.shooter.find_path(i.rect.centerx, i.rect.centery)
                 self.shooter.chase_track = True
                 self.kill()
             elif i.rect.colliderect(self.rect) and self.team == "guard":
