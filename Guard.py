@@ -4,9 +4,12 @@ from Character import *
 from Game import *
 from settings import *
 from Bullet import *
+from Item import *
 from pathfinding.core.grid import Grid
 from pathfinding.finder.a_star import AStarFinder
 from pathfinding.core.diagonal_movement import DiagonalMovement
+from random import randint
+
 
 class Guard(Character):
   def __init__(self, new_pos, new_type, new_direction):
@@ -21,7 +24,6 @@ class Guard(Character):
     self.chase_track = False
     self.path = []
     self.path_rects_group = []
-    self.player_seen = False
     self.previous_path_time = 0
     self.sight_bullet = None
     self.previous_shot = 0
@@ -52,8 +54,9 @@ class Guard(Character):
   def update(self): # update method for guards to run any methods that need to be run every frame
     self.movement()
     self.path_collisions()
+    if not self.held_item:
+      self.held_item_gen()
     if not self.path:
-      self.chase_track = False
       self.previous_path_time = pygame.time.get_ticks()
       self.player_detection()
     else:
@@ -66,15 +69,28 @@ class Guard(Character):
       self.x_collisions(collision_objects)
     else:
       self.patrol_collisions(collision_objects)
+
+    if self.hp <= 0:
+      self.drop()
     self.die()
-    self.player_seen = False
+    self.chase_track = False
 
 
   def held_item_gen(self):
-    pass
+    num = randint(1, 3)
+    if num == 1:
+      self.held_item = "keycard"
+    else:
+      self.held_item = "empty"
+    
 
   def drop(self):
-    pass
+    if self.held_item == "keycard":
+      item = Item(self.rect.center)
+      item_sprites.add(item)
+      from main import new_game
+      new_game.all_sprites.add(item)
+
 
   def path_rects(self):
     if self.path:

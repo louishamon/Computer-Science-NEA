@@ -9,6 +9,8 @@ from Bullet import *
 from Object import *
 from Game_over import *
 from Button import *
+from Vault import *
+from Winner import *
 
 class Game:
     def __init__(self, screen_width, screen_height, new_collision_sprites, new_bullet_sprites, new_guard_sprites, new_player_sprites, new_object_sprites):
@@ -23,6 +25,7 @@ class Game:
         self.bullet_sprites = new_bullet_sprites
         self.object_sprites = new_object_sprites
 
+
     def play(self, screen, game_map): # sets up the game including the drawing of objects, splash screen and mainly the game loop
         pygame.init()
         self.create_object()
@@ -30,10 +33,9 @@ class Game:
         run = True
         splash_page = Splash(1000, self) # instantiates an object from splash page with a timer
         splash_page.run() # plays the splash page
-        self.draw_map(game_map, self.collision_sprites)
 
         while run:
-            screen.fill("white") # blanks the whole screen before all objects are drawn again in the updated form
+            screen.fill("white") # blanks the whole screen before all objects are drawn again in the updated form  
             self.bullet_sprites.draw(screen)
             self.all_sprites.draw(screen)
             #pygame.draw.rect(self.screen, "black", self.player, 2)
@@ -42,27 +44,43 @@ class Game:
             self.bullet_sprites.update()
             self.all_sprites.update()
             if self.player.hp < 1:
+                for sprite in self.all_sprites:
+                    sprite.kill()
                 self.game_over()
+                self.create_object()
+            if self.vault.winner:
+                for sprite in self.all_sprites:
+                    sprite.kill()
+                if self.winner():
+                    quit()
                 self.create_object()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     quit()
             clock.tick(60)
 
+
+    def winner(self):
+        screen.fill("white")
+        winner = Winner(self)
+        if winner.run():
+            return True
+
+
     def game_over(self):
         screen.fill("white")
         game_over = Game_over(self)
         game_over.run()
-        for guard in guard_sprites:
-            guard.kill()
 
     
-
     def quit(self, screen): # allows game to be exited using the X button in the top right
         pygame.display.quit()
         pygame.quit()
 
+
     def create_object(self): # method to contain instantiation of player and guard sprites
+        self.draw_map(game_map, self.collision_sprites)
+
         self.player = Player((110,110))
         self.all_sprites.add(self.player)
         self.player_sprites.add(self.player)
@@ -101,6 +119,9 @@ class Game:
         self.object2 = Object((770, 350), self.guard8)
         self.all_sprites.add(self.object2)
         self.object_sprites.add(self.object2)
+
+        self.vault = Vault((70, 840))
+        self.all_sprites.add(self.vault)
 
     def draw_map(self, game_map, collision_objects): # method to use the list containing the location of basewall objects to draw to the screen
         for row_index, row in enumerate(game_map):
