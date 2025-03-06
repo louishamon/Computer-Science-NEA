@@ -93,6 +93,8 @@ class Guard(Character):
     else:
       pass
 
+    self.near_path_target()
+
     if self.chase_track:
       self.chase_movement()
       self.path = []
@@ -213,5 +215,14 @@ class Guard(Character):
         x_difference = player_pos[0] - self.rect.centerx
         y_difference = player_pos[1] - self.rect.centery
         angle = math.degrees(math.atan2(y_difference, x_difference))
-        bullet = Bullet(20, angle, self.rect.centerx, self.rect.centery, "guard", self)
+        bullet = Bullet(0, angle, self.rect.centerx, self.rect.centery, "guard", self)
         bullet_sprites.add(bullet)
+
+  def near_path_target(self):
+    if self.path:
+      x_difference = self.path[0][0] - self.rect.centerx
+      y_difference = self.path[0][1] - self.rect.centery
+      sum_of_squares = (x_difference ** 2) + (y_difference ** 2)
+      distance = math.sqrt(sum_of_squares)
+      if distance < 140:
+        self.path = []
