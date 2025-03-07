@@ -12,14 +12,20 @@ from random import randint
 
 
 class Guard(Character):
-  def __init__(self, new_pos, new_type, new_direction):
+  def __init__(self, new_pos, new_type, new_direction, new_disguise):
     super().__init__(new_pos)
     self.held_item = None
     self.type = new_type
     self.combat = None
     self.image = pygame.Surface((50, 50))
     self.rect = self.image.get_rect(topleft = self.pos)
-    self.image.fill("yellow")
+    self.disguise = new_disguise
+    if self.type == ("vault"):
+      self.image.fill("black")
+    elif self.disguise:
+      self.image.fill("forest green")
+    else:
+      self.image.fill("yellow")
     self.direction = new_direction
     self.chase_track = False
     self.path = []
@@ -28,6 +34,7 @@ class Guard(Character):
     self.sight_bullet = None
     self.previous_shot = 0
     self.last_seen = None
+    
   
   def movement(self): # movement method for guards, when moving, the rect position must follow so the coordinates of each guard can be tracked
     x_pos = self.pos[0] + self.direction[0]
@@ -70,6 +77,10 @@ class Guard(Character):
           self.rect.right = i.rect.left
         else:
           self.rect.left = i.rect.right
+    for i in player_sprites:
+      if i.rect.colliderect(self.rect):
+        i.disguise = True
+        self.hp = 0
 
 
   def chase_y_collisions(self, wall_sprites):
@@ -215,8 +226,9 @@ class Guard(Character):
         x_difference = player_pos[0] - self.rect.centerx
         y_difference = player_pos[1] - self.rect.centery
         angle = math.degrees(math.atan2(y_difference, x_difference))
-        bullet = Bullet(0, angle, self.rect.centerx, self.rect.centery, "guard", self)
+        bullet = Bullet(25, angle, self.rect.centerx, self.rect.centery, "guard", self)
         bullet_sprites.add(bullet)
+
 
   def near_path_target(self):
     if self.path:

@@ -16,7 +16,7 @@ class Player(Character):
     self.rect = self.image.get_rect(topleft = self.pos) # creates player rectangle using the image dimensions
     self.hitbox_rect = player_hitbox # creates the hitbox rectangle to handle collisions
     self.hitbox_rect.center = self.rect.center
-    self.disguise = None # stores the disguise currently worn by the player for guards to ignore them
+    self.disguise = False # stores the disguise currently worn by the player for guards to ignore them
     self.ammo = 30
     self.gun_held = (30, 2)
     self.keycard = True # stores if the player has a keycard
