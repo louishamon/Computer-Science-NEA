@@ -23,7 +23,6 @@ class Pathfinder:
         end = grid.node(3, 1)
         route,_ = finder.find_path(start, end, grid)
         coords = [(node.x, node.y) for node in route]
-        print(coords)
         grid.cleanup()
         
         

@@ -3,6 +3,7 @@ from settings import *
 import pygame
 import math
 from Bullet import Bullet
+from assets import *
 
 class Player(Character):
   def __init__(self, new_pos):
@@ -10,7 +11,7 @@ class Player(Character):
 
   def reset(self, new_pos):
     super().__init__(new_pos)
-    self.image_setup = pygame.image.load("survivor_no_background.png").convert_alpha() # imports the image and converts for better performance
+    self.image_setup = pygame.image.load("assets/survivor_no_background.png").convert_alpha() # imports the image and converts for better performance
     self.image = pygame.transform.scale(self.image_setup, (60, 40)) # changing dimensions of image
     self.base_player_image = self.image
     self.rect = self.image.get_rect(topleft = self.pos) # creates player rectangle using the image dimensions

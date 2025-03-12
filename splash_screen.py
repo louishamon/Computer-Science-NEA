@@ -3,7 +3,7 @@ from Game import *
 
 class Splash():
   def __init__(self, new_display_time, new_game):
-    self.image = pygame.image.load("splash_page.webp").convert()
+    self.image = pygame.image.load("assets/splash_page.webp").convert()
     self.display_time = new_display_time
     self.screen = new_game.screen
     self.clock = pygame.time.Clock()

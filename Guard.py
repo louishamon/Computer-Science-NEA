@@ -16,7 +16,6 @@ class Guard(Character):
     super().__init__(new_pos)
     self.held_item = None
     self.type = new_type
-    self.combat = None
     self.image = pygame.Surface((50, 50))
     self.rect = self.image.get_rect(topleft = self.pos)
     self.disguise = new_disguise
@@ -79,7 +78,8 @@ class Guard(Character):
           self.rect.left = i.rect.right
     for i in player_sprites:
       if i.rect.colliderect(self.rect):
-        i.disguise = True
+        if self.disguise:
+          i.disguise = True
         self.hp = 0
 
 

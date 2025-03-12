@@ -4,13 +4,13 @@ from Button import *
 
 class Game_over():
     def __init__(self, new_game):
-        self.image = pygame.image.load("game over screen silent robbery.jpg").convert()
+        self.image = pygame.image.load("assets/game over screen silent robbery.jpg").convert()
         self.screen = new_game.screen
         self.clock = pygame.time.Clock()
 
     def run(self):
         run = True
-        restart = Button(705, 755, "restart button silent robbery.jpg")
+        restart = Button(705, 755, "assets/restart button silent robbery.jpg")
         restart.draw()
         while run:
             for event in pygame.event.get():
